@@ -1,0 +1,37 @@
+{
+  "name": "wmstories",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.10.1",
+    "axios": "^1.13.2",
+    "bootstrap": "^4.5.3",
+    "firebase": "^8.10.1",
+    "hls.js": "^1.6.14",
+    "lodash": "^4.17.21",
+    "next": "16.0.1",
+    "next-intl": "^4.5.0",
+    "react": "19.2.0",
+    "react-bootstrap-sweetalert": "^5.2.0",
+    "react-dom": "19.2.0",
+    "react-h5-audio-player": "^3.10.1",
+    "react-helmet": "^6.1.0",
+    "react-intersection-observer": "^9.16.0",
+    "react-lazy-load-image-component": "^1.6.3",
+    "react-redux": "^9.2.0",
+    "react-share": "^5.2.2",
+    "redux-persist": "^6.0.0",
+    "smoothscroll-polyfill": "^0.4.4"
+  },
+  "devDependencies": {
+    "babel-plugin-react-compiler": "1.0.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.1"
+  }
+}

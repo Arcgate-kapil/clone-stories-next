@@ -1,0 +1,20 @@
+{
+  "Version": "1.0",
+  "IdentityManager": {
+    "Default": {}
+  },
+"CredentialsProvider": {
+  "CognitoIdentity": {
+    "Default": {
+      "PoolId": "ap-south-1:8efb75c9-0dd3-410b-ac9f-ba680f268ef9",
+      "Region": "ap-south-1"
+    }
+  }
+},
+  "S3TransferUtility": {
+    "Default": {
+      "Bucket": "chatwm",
+      "Region": "ap-south-1"
+    }
+  }
+}

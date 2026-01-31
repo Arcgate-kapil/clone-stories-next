@@ -1,0 +1,30 @@
+.br-1-5 {
+  border-radius: 1.5vw;
+}
+
+.not-underline {
+  text-decoration: none !important;
+}
+
+.m-l-23 {
+  margin-left: 23px;
+}
+
+.m-t-172 {
+  margin-top: 172px !important;
+}
+
+.m-t-196 {
+  margin-top: 196px !important;
+}
+
+.w-92 {
+  width: 92% !important;
+}
+
+.play-pause-icon .icon::before {
+  width: 1.5em !important;
+}
+.z-index-1 {
+  z-index: 1;
+}
