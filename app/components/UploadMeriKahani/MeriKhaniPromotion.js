@@ -88,8 +88,8 @@ const MeriKhaniPromotion = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://cdn.workmob.com/stories_workmob/config/stories_premium.json');
-        const flatArray = response?.data?.reduce((acc, curr) => acc.concat(curr), []);
+        const response = await axios.get('https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/stories_premium');
+        const flatArray = response?.data?.data?.reduce((acc, curr) => acc.concat(curr), []);
 
         const storiesItems = flatArray.find(section => section.type === "stories");
         const localItems = flatArray.find(section => section.type === "local");

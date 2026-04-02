@@ -7,7 +7,7 @@ let category = [];
 
 async function fetchCategoryAudio() {
 
-  const response = await fetch(`https://cdn.workmob.com/stories_workmob/config/audio-category.json`);
+  const response = await fetch(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/audio-category?limit=54`);
 
   if (!response.ok) {
     throw new Error('Failed to fetch feed category audio');
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }) {
   let { locale, id } = await params;
 
   const categoryAudio = await fetchCategoryAudio();
-  let mainCategory = categoryAudio.filter(e => e.category == id);
+  let mainCategory = categoryAudio?.data.filter(e => e.category == id);
 
   if (mainCategory?.length == 0) {
     return {

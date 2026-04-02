@@ -15,17 +15,22 @@ let redirectMap = null;
 async function getRedirectMap() {
   if (redirectMap) return redirectMap; // Return cached map if available
   try {
-    const response = await fetch('https://cdn.workmob.com/stories_workmob/config/redirect_url_list.json', {
+    const response = await fetch('https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/redirect_url_list', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
+
     if (!response.ok) {
       throw new Error('Failed to fetch redirect map');
     }
     const data = await response.json();
+    const result = data.data.map(item => ({
+      [item.key]: item.value
+    }));
+
     redirectMap = new Map();
     // Flatten the array of objects into a Map for O(1) lookups
-    data.forEach((obj) => {
+    result.forEach((obj) => {
       const key = Object.keys(obj)[0]; // Get the key (old slug)
       const value = obj[key]; // Get the value (new slug)
       if (key && value) {
@@ -126,7 +131,8 @@ export default async function middleware(request) {
     } else {
       let newPathname = currentPathname[0] == 'hindi' ? currentPathname[2] : currentPathname[1];
       try {
-        const apiResponse = await fetch(`https://cdn.workmob.com/stories_workmob/config-latest/locations/${newPathname}.json`, {
+        // const apiResponse = await fetch(`https://cdn.workmob.com/stories_workmob/config-latest/locations/${newPathname}.json`, {
+        const apiResponse = await fetch(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/config-latest-locations-${newPathname}?limit=100`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -153,15 +159,16 @@ export default async function middleware(request) {
     } else {
       let newPathname = currentPathname[0] == 'hindi' ? currentPathname[2] : currentPathname[1];
       try {
-        const apiResponse = await fetch(`https://cdn.workmob.com/stories_workmob/config/insightlisting.json`, {
+        // const apiResponse = await fetch(`https://cdn.workmob.com/stories_workmob/config/insightlisting.json`, {
+        const apiResponse = await fetch(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/insightlisting?limit=100`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
 
         if (apiResponse.ok) {
           const data = await apiResponse.json();
-          const hasMatch = data.some(story => story.slug === newPathname);
-          const hasMatchNew = data.some(story => story.storySlug.toLowerCase().replace(/ /g, '-') === newPathname);
+          const hasMatch = data?.data?.some(story => story.slug === newPathname);
+          const hasMatchNew = data?.data?.some(story => story.storySlug.toLowerCase().replace(/ /g, '-') === newPathname);
           if (hasMatch == false && hasMatchNew == false) {
             return new NextResponse(htmlContent, {
               status: 404,
@@ -251,7 +258,6 @@ export default async function middleware(request) {
 
     const lookupKey = newPathname.startsWith('/') ? newPathname.slice(1) : newPathname;
     const map = await getRedirectMap();
-
     if (map.has(lookupKey)) {
       const newSlug = map.get(lookupKey);
       const newUrl = new URL(`/${newSlug}`, request.url);
@@ -260,7 +266,7 @@ export default async function middleware(request) {
     }
 
     try {
-      const apiResponse = await fetch(`https://cdn.workmob.com/stories_workmob/config/story-detail${newPathname}.json`, {
+      const apiResponse = await fetch(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/story-detail/${newPathname}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });

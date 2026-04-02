@@ -18,6 +18,8 @@ import StoryDetailPageFooterNew from '../components/StoryDetail/StoryDetailPageF
 import CustomStyle from '../components/common/CustomStyle';
 
 const LocalDetailPage = (props) => {
+  let { cityDetail } = props;
+
   const state = useSelector((state) => state.blog);
   let dispatch = useDispatch();
 
@@ -44,6 +46,7 @@ const LocalDetailPage = (props) => {
   const [voicesUrlExists, setVoicesUrlExists] = useState(null);
   const [navType, setNavType] = useState('fixedNav');
   const [userInfo, setUserInfo] = useState(null);
+  const [isSearchLoader, setIsSearchLoader] = useState(false);
 
   const capitalizeEachWord = (str) => {
     return str.split(' ').map(word => {
@@ -72,7 +75,7 @@ const LocalDetailPage = (props) => {
   }
 
   useEffect(() => {
-    if (state.storyListing.length || state.storyListing.length == 0) {
+    if (state.storyListing.length || state.storyListing.length == 0 || isSearchLoader == false) {
       const getDataFromSession = sessionStorage.getItem(pathname);
       const cacheDataSession = sessionStorage.getItem('cacheData');
       if (pathname !== cacheDataSession) {
@@ -108,7 +111,13 @@ const LocalDetailPage = (props) => {
         sessionStorage.removeItem(pathname);
       }
     }
-  }, [state.storyListing]);
+  }, [state.storyListing, isSearchLoader]);
+
+  useEffect(() => {
+    if (isSearchLoader) {
+      setStoryArr(state.storyAllListing);
+    }
+  }, [state.storyAllListing, isSearchLoader]);
 
   useEffect(() => {
     const shimmerMobile = shimmerMobileRef.current;
@@ -157,8 +166,9 @@ const LocalDetailPage = (props) => {
   useEffect(() => {
     trackScreen(SCREEN_NAME.storyList);
     const category = id || 'top';
+    // comment kiya hai 
     dispatch(fetchStoryListingByLocation(category));
-    dispatch(fetchAllListingByLocation(category));
+    // dispatch(fetchAllListingByLocation(category));
 
     dispatch(setIframeView(search == '?hideBanner=yes' || state.isiFrameView ? true : false));
 
@@ -304,15 +314,15 @@ const LocalDetailPage = (props) => {
 
   useEffect(() => {
     // Update title
-    document.title = state.isHindi ? `${props?.cityDetail?.location_hindi} लोकल प्रोफेशनल्स (स्थानीय पेशेवरों), बिज़नेस ओनर्स, स्टार्टअप्स। खोजें व कनेक्ट करें।` : `${props?.cityDetail?.location.charAt(0).toUpperCase() + props?.cityDetail?.location.slice(1)} Local Professionals, Business Owners, Startups | Find & Connect`;
+    document.title = state?.isHindi ? `${cityDetail[0]?.location_hindi} लोकल प्रोफेशनल्स (स्थानीय पेशेवरों), बिज़नेस ओनर्स, स्टार्टअप्स। खोजें व कनेक्ट करें।` : `${cityDetail[0]?.location?.charAt(0).toUpperCase() + cityDetail[0]?.location?.slice(1)} Local Professionals, Business Owners, Startups | Find & Connect`;
     // Update or create meta description
     let metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute('content', state.isHindi ? `स्थानीय प्रोफेशनल्स, स्टार्टअप्स एवं बिज़नेस ओनर्स को सर्च करें और उनसे कनेक्ट करें।` : `Discover, connect and meet with local ${props?.cityDetail?.location.charAt(0).toUpperCase() + props?.cityDetail?.location.slice(1)} professionals, business owners, startups, social workers and more.`);
+      metaDesc.setAttribute('content', state?.isHindi ? `स्थानीय प्रोफेशनल्स, स्टार्टअप्स एवं बिज़नेस ओनर्स को सर्च करें और उनसे कनेक्ट करें।` : `Discover, connect and meet with local ${cityDetail[0]?.location?.charAt(0).toUpperCase() + cityDetail[0]?.location?.slice(1)} professionals, business owners, startups, social workers and more.`);
     } else {
       metaDesc = document.createElement('meta');
       metaDesc.name = 'description';
-      metaDesc.content = state.isHindi ? `स्थानीय प्रोफेशनल्स, स्टार्टअप्स एवं बिज़नेस ओनर्स को सर्च करें और उनसे कनेक्ट करें।` : `Discover, connect and meet with local ${props?.cityDetail?.location.charAt(0).toUpperCase() + props?.cityDetail?.location.slice(1)} professionals, business owners, startups, social workers and more.`;
+      metaDesc.content = state?.isHindi ? `स्थानीय प्रोफेशनल्स, स्टार्टअप्स एवं बिज़नेस ओनर्स को सर्च करें और उनसे कनेक्ट करें।` : `Discover, connect and meet with local ${cityDetail[0]?.location?.charAt(0).toUpperCase() + cityDetail[0]?.location?.slice(1)} professionals, business owners, startups, social workers and more.`;
       document.head.appendChild(metaDesc);
     }
     // Update Open Graph tags
@@ -327,14 +337,14 @@ const LocalDetailPage = (props) => {
         document.head.appendChild(meta);
       }
     };
-    updateOrCreateMeta('og:title', state.isHindi ? `${props?.cityDetail?.location_hindi} लोकल प्रोफेशनल्स (स्थानीय पेशेवरों), बिज़नेस ओनर्स, स्टार्टअप्स। खोजें व कनेक्ट करें।` : `${props?.cityDetail?.location.charAt(0).toUpperCase() + props?.cityDetail?.location.slice(1)} Local Professionals, Business Owners, Startups | Find & Connect`);
-    updateOrCreateMeta('og:description', state.isHindi ? `स्थानीय प्रोफेशनल्स, स्टार्टअप्स एवं बिज़नेस ओनर्स को सर्च करें और उनसे कनेक्ट करें।` : `Discover, connect and meet with local ${props?.cityDetail?.location.charAt(0).toUpperCase() + props?.cityDetail?.location.slice(1)} professionals, business owners, startups, social workers and more.`);
+    updateOrCreateMeta('og:title', state.isHindi ? `${cityDetail[0]?.location_hindi} लोकल प्रोफेशनल्स (स्थानीय पेशेवरों), बिज़नेस ओनर्स, स्टार्टअप्स। खोजें व कनेक्ट करें।` : `${cityDetail[0]?.location.charAt(0).toUpperCase() + cityDetail[0]?.location.slice(1)} Local Professionals, Business Owners, Startups | Find & Connect`);
+    updateOrCreateMeta('og:description', state.isHindi ? `स्थानीय प्रोफेशनल्स, स्टार्टअप्स एवं बिज़नेस ओनर्स को सर्च करें और उनसे कनेक्ट करें।` : `Discover, connect and meet with local ${cityDetail[0]?.location.charAt(0).toUpperCase() + cityDetail[0]?.location.slice(1)} professionals, business owners, startups, social workers and more.`);
     updateOrCreateMeta('og:url', HOST + pathname);
     updateOrCreateMeta('og:image', STORY_LIST.ogImage);
     updateOrCreateMeta('og:site_name', STORY_LIST.siteName);
     // Update Twitter tags
-    updateOrCreateMeta('twitter:title', state.isHindi ? `${props?.cityDetail?.location_hindi} लोकल प्रोफेशनल्स (स्थानीय पेशेवरों), बिज़नेस ओनर्स, स्टार्टअप्स। खोजें व कनेक्ट करें।` : `${props?.cityDetail?.location.charAt(0).toUpperCase() + props?.cityDetail?.location.slice(1)} Local Professionals, Business Owners, Startups | Find & Connect`);
-    updateOrCreateMeta('twitter:description', state.isHindi ? `स्थानीय प्रोफेशनल्स, स्टार्टअप्स एवं बिज़नेस ओनर्स को सर्च करें और उनसे कनेक्ट करें।` : `Discover, connect and meet with local ${props?.cityDetail?.location.charAt(0).toUpperCase() + props?.cityDetail?.location.slice(1)} professionals, business owners, startups, social workers and more.`);
+    updateOrCreateMeta('twitter:title', state.isHindi ? `${cityDetail[0]?.location_hindi} लोकल प्रोफेशनल्स (स्थानीय पेशेवरों), बिज़नेस ओनर्स, स्टार्टअप्स। खोजें व कनेक्ट करें।` : `${cityDetail[0]?.location.charAt(0).toUpperCase() + cityDetail[0]?.location.slice(1)} Local Professionals, Business Owners, Startups | Find & Connect`);
+    updateOrCreateMeta('twitter:description', state.isHindi ? `स्थानीय प्रोफेशनल्स, स्टार्टअप्स एवं बिज़नेस ओनर्स को सर्च करें और उनसे कनेक्ट करें।` : `Discover, connect and meet with local ${cityDetail[0]?.location.charAt(0).toUpperCase() + cityDetail[0]?.location.slice(1)} professionals, business owners, startups, social workers and more.`);
     updateOrCreateMeta('twitter:image', STORY_LIST.ogImage);
     // Update canonical link
     let canonical = document.querySelector('link[rel="canonical"]');
@@ -461,12 +471,13 @@ const LocalDetailPage = (props) => {
           storyArr={storyArr}
           setStoryArr={setStoryArr}
           setCustomSearchValue={setCustomSearchValue}
+          setIsSearchLoader={setIsSearchLoader}
           {...state}
         />
       </ErrorBoundary>
 
       <div
-        style={{ width: '95%', maxWidth: '100%', marginBottom: 'unset' }}
+        style={{ width: '95%', maxWidth: '100%', marginBottom: 'unset', position: 'relative' }}
         className='container-fluid'
         ref={containerFluid}
       >
@@ -485,26 +496,33 @@ const LocalDetailPage = (props) => {
             <PHCardLoader />
           )
         ) : (
-          <>
-            <div className='row inspring-thumbs'>
-              {storyArr.length > 0 ?
-                storyArr.map((story, index) => (
-                  <CardInspiring
-                    key={index}
-                    isHindi={state.isHindi}
-                    colSize={3}
-                    pageId={id}
-                    screenName={SCREEN_NAME.storyList}
-                    story={story}
-                    onStoreSession={handleStoreSession}
-                  />
-                ))
-                :
-                customSearchValue.length > 0 && storyArr.length === 0 && (
-                  <p className='notFoundMessageCustom'>No stories found with "{customSearchValue}"</p>
-                )}
-            </div>
-          </>)}
+          state.storyAllListLoading ?
+            (
+              <PHCardLoader />
+            )
+            :
+            (
+              <>
+                <div className='row inspring-thumbs'>
+                  {storyArr.length > 0 ?
+                    storyArr.map((story, index) => (
+                      <CardInspiring
+                        key={index}
+                        isHindi={state.isHindi}
+                        colSize={3}
+                        pageId={id}
+                        screenName={SCREEN_NAME.storyList}
+                        story={story}
+                        onStoreSession={handleStoreSession}
+                      />
+                    ))
+                    :
+                    customSearchValue.length > 0 && storyArr.length === 0 && (
+                      <p className='notFoundMessageCustom'>No stories found with "{customSearchValue}"</p>
+                    )}
+                </div>
+              </>
+            ))}
         <div className='row justify-content-center'>
           <div className='col-lg-8 col-md-12 col-sm-12 col-12'>
             <div className='bottomHeading text-center'>

@@ -108,10 +108,10 @@ const MeriKhaniRules = (props) => {
   }, [categoryIndex, categoryUrls]);
 
   useEffect(() => {
-    getData('https://cdn.workmob.com/stories_workmob/story-questions/story-type.json').then(
+    getData('https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/questions-story-type').then(
       (data) => {
-        setCategoryUrls(data.map((v) => v.questions_url));
-        setCategoriesData(data);
+        setCategoryUrls(data?.data?.map((v) => v.questions_url));
+        setCategoriesData(data?.data);
       }
     );
   }, []);

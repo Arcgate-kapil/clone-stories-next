@@ -4,7 +4,8 @@ import { HOME_PAGE, HOST } from '@/app/constants/localString';
 
 async function fetchFeedDetail(slug) {
 
-  const response = await fetch(`https://cdn.workmob.com/stories_workmob/config/story-detail/${slug}.json`);
+  // const response = await fetch(`https://cdn.workmob.com/stories_workmob/config/story-detail/${slug}.json`);
+  const response = await fetch(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/story-detail/${slug}`);
 
   if (!response.ok) {
     throw new Error('Failed to fetch feed detail');

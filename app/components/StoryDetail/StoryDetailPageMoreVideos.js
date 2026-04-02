@@ -21,7 +21,8 @@ function StoryDetailPageMoreVideos({ storyDetail }) {
   const { instructor, metaDesc, storyHeading, workmobUserName } = storyDetail;
   const { width } = useWindowSize();
   const userData = useFetch(
-    `https://cdn.workmob.com/stories_workmob/config/instructor/${instructor}.json`
+    // `https://cdn.workmob.com/stories_workmob/config/instructor/${instructor}.json`
+    `https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/instructors/${instructor}`
   );
 
   const videoUrls =

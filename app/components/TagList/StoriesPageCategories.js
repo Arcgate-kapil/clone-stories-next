@@ -86,6 +86,7 @@ let StoriesPageCategories = props => {
     if (!!showDropDownCategory) {
       doToggleDropDown(false);
     }
+    console.log('gdhh', category);
     fetchStoryListing(category);
   };
 

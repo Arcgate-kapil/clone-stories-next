@@ -6,7 +6,8 @@ let initialData = [];
 const fetchData = () => {
 
   return new Promise((resolve, reject) => {
-    fetch(`https://cdn.workmob.com/stories_workmob/config/insightlisting.json`)
+    fetch(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/insightlisting`)
+    // fetch(`https://cdn.workmob.com/stories_workmob/config/insightlisting.json`)
       .then((res) => {
         return res.json();
       })
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }) {
 
   try {
     const data = await fetchData();
-    initialData = data
+    initialData = data.data
 
   } catch (error) {
     console.error("Error in fetching initial data:", error);
@@ -91,7 +92,7 @@ const Page = async () => {
 
   try {
     const data = await fetchData();
-    initialData = data
+    initialData = data.data
 
   } catch (error) {
     console.error("Error in fetching initial data:", error);

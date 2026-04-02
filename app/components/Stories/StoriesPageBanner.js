@@ -4,6 +4,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { WHITE, ORANGE } from '../../constants/colors';
 import CustomStyle from '../common/CustomStyle';
 import { usePathname, useParams } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAllListingByLocation, fetchMasterListingNew, fetchStoriesListingNew, fetchStoryListing } from '@/app/lib/features/blogSlice';
 
 const StoriesPageBanner = (props) => {
   const {
@@ -18,6 +20,8 @@ const StoriesPageBanner = (props) => {
     storyArr,
     setStoryArr,
     setCustomSearchValue,
+    categoryNew,
+    setIsSearchLoader,
   } = props;
 
   const pathname = usePathname();
@@ -28,6 +32,8 @@ const StoriesPageBanner = (props) => {
   const searchTimeoutRef = useRef();
   const searchValueRef = useRef();
   const parts = pathname.split('/');
+  let dispatch = useDispatch();
+  const state = useSelector((state) => state.blog);
 
   const capitalizeEachWord = (str) => {
     return str.split(' ').map(word => {
@@ -88,43 +94,56 @@ const StoriesPageBanner = (props) => {
 
         if (pathname === '/voices' || pathname === '/hindi/voices') {
           if (masterListing) {
-            for (let user of masterListing) {
-              const name = user.name && user.name.toLowerCase();
-
-              if (
-                user.slug &&
-                user.thumb &&
-                user.storyHeading &&
-                name &&
-                user.name.toLowerCase().includes(searchValue.toLowerCase())
-              ) {
-                matchesFound.push(user);
-              }
+            if (value.length > 1) {
+              dispatch(fetchMasterListingNew(value));
+              // setIsSearchLoader(true);
+            } else {
+              dispatch(fetchStoryListing(categoryNew));
+              // setIsSearchLoader(false);
             }
+            // for (let user of masterListing) {
+            //   const name = user.name && user.name.toLowerCase();
+
+            //   if (
+            //     user.slug &&
+            //     user.thumb &&
+            //     user.storyHeading &&
+            //     name &&
+            //     user.name.toLowerCase().includes(searchValue.toLowerCase())
+            //   ) {
+            //     matchesFound.push(user);
+            //   }
             // }
-            setStoryArr(matchesFound.length > 60 ? matchesFound.slice(0, 60) : matchesFound);
+            // }
           } else {
             setStoryArr(storyArr.slice(0, 60));
           }
         }
 
         if ((parts[0] === '' && parts[1] === 'hindi' && parts[2] === 'local' && parts[3] !== undefined) || (parts[0] === '' && parts[1] === 'local' && parts[2] !== undefined)) {
+          let city = parts[1] === 'hindi' ? parts[3] : parts[2];
           if (storyAllListing) {
-            for (let user of storyAllListing) {
-              const name = user.name && user.name.toLowerCase();
-
-              if (
-                user.slug &&
-                user.thumb &&
-                user.storyHeading &&
-                name &&
-                (normalizeName(name).split(' ').some(v => v.startsWith(searchValue)) || normalizeName(name).startsWith(searchValue))
-              ) {
-                matchesFound.push(user);
-              }
+            if (value.length > 1) {
+              dispatch(fetchAllListingByLocation({ value, city }));
+              setIsSearchLoader(true);
+            } else {
+              dispatch(fetchAllListingByLocation({ value, city }));
+              setIsSearchLoader(false);
             }
+            // for (let user of storyAllListing) {
+            //   const name = user.name && user.name.toLowerCase();
+
+            //   if (
+            //     user.slug &&
+            //     user.thumb &&
+            //     user.storyHeading &&
+            //     name &&
+            //     (normalizeName(name).split(' ').some(v => v.startsWith(searchValue)) || normalizeName(name).startsWith(searchValue))
+            //   ) {
+            //     matchesFound.push(user);
+            //   }
             // }
-            setStoryArr(matchesFound.slice(0, 8));
+            // setStoryArr(matchesFound.slice(0, 8));
           } else {
             setStoryArr(storyArr.slice(0, 8));
           }
@@ -132,21 +151,28 @@ const StoriesPageBanner = (props) => {
 
         if ((parts[0] === '' && parts[1] === 'hindi' && parts[2] === 'voices' && parts[3] !== undefined) || (parts[0] === '' && parts[1] === 'voices' && parts[2] !== undefined)) {
           if (storiesListing) {
-            for (let user of storiesListing) {
-              const name = user.name && user.name.toLowerCase();
-
-              if (
-                user.slug &&
-                user.thumb &&
-                user.storyHeading &&
-                name &&
-                (normalizeName(name).split(' ').some(v => v.startsWith(searchValue)) || normalizeName(name).startsWith(searchValue))
-              ) {
-                matchesFound.push(user);
-              }
+            if (value.length > 1) {
+              dispatch(dispatch(fetchStoriesListingNew({ value, categoryNew })));
+              setIsSearchLoader(true);
+            } else {
+              dispatch(dispatch(fetchStoriesListingNew({ value, categoryNew })));
+              setIsSearchLoader(false);
             }
+            // for (let user of storiesListing) {
+            //   const name = user.name && user.name.toLowerCase();
+
+            //   if (
+            //     user.slug &&
+            //     user.thumb &&
+            //     user.storyHeading &&
+            //     name &&
+            //     (normalizeName(name).split(' ').some(v => v.startsWith(searchValue)) || normalizeName(name).startsWith(searchValue))
+            //   ) {
+            //     matchesFound.push(user);
+            //   }
             // }
-            setStoryArr(matchesFound.slice(0, 8));
+            // }
+            // setStoryArr(matchesFound.slice(0, 8));
           } else {
             setStoryArr(storyArr.slice(0, 8));
           }

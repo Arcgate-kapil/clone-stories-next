@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, usePathname, useSearchParams, useRouter } from 'next/navigation';
 import StoriesPageBanner from './Stories/StoriesPageBanner';
 import ReactHlsPlayer from './HSL/components/react-hls-player';
@@ -16,6 +16,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import useWindowSize from '../utils/useWindowSize';
 import StoryDetailPageFooterNew from './StoryDetail/StoryDetailPageFooterNew';
 import CustomStyle from './common/CustomStyle';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const VoicesListPage = (props) => {
   const state = useSelector((state) => state.blog);
@@ -42,6 +43,10 @@ const VoicesListPage = (props) => {
   const localPageRef = useRef();
   const [urlExists, setUrlExists] = useState(null);
   const [voicesUrlExists, setVoicesUrlExists] = useState(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [lastKey, setLastKey] = useState('');
+  const [loading, setLoading] = useState(false);
+  const categoryNew = id || 'top';
 
   const capitalizeEachWord = (str) => {
     return str.split(' ').map(word => {
@@ -80,7 +85,7 @@ const VoicesListPage = (props) => {
       }
       if (getDataFromSession && pathname === cacheDataSession) {
         const newStoryListing = JSON.parse(getDataFromSession);
-        const slicedData = newStoryListing.slice(0, 60);
+        const slicedData = newStoryListing.slice(0, 10);
         setStoryArr(slicedData);
         sessionStorage.removeItem(pathname);
         sessionStorageRef.current = false;
@@ -113,6 +118,12 @@ const VoicesListPage = (props) => {
       }
     }
   }, [state.storyListing]);
+
+  useEffect(() => {
+    if (customSearchValue.length == 0) {
+      setStoryArr(state.storyListing);
+    }
+  }, [customSearchValue]);
 
   useEffect(() => {
     const shimmerMobile = shimmerMobileRef.current;
@@ -316,6 +327,37 @@ const VoicesListPage = (props) => {
     }
   }, [state.isHindi, pathname]);
 
+  useEffect(() => {
+    if (!state?.masterListLoadingNew) {
+      setStoryArr(state.masterListing);
+    }
+  },[state.masterListLoadingNew]);
+
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/stories?name=${customSearchValue}&limit=12&lastKey=${lastKey == '' ? encodeURIComponent(state?.filterObject?.lastKey) : encodeURIComponent(lastKey)}`);
+      let newItems = await response.json();
+      setLastKey(newItems.lastKey);
+      setHasMore(newItems.hasMore);
+      let newSub = [...storyArr, ...newItems.data]
+      setStoryArr(newSub);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setLoading(false);
+    }
+  };
+
+
+  const loadMore = () => {
+    if (hasMore && !loading) {
+      fetchData();
+    }
+  };
+
+
   return (
     <>
       <ReactHlsPlayer
@@ -368,6 +410,7 @@ const VoicesListPage = (props) => {
           homePara={homePara}
           storyArr={storyArr}
           setStoryArr={setStoryArr}
+          categoryNew={categoryNew}
           setCustomSearchValue={setCustomSearchValue}
           {...state}
         />
@@ -393,24 +436,50 @@ const VoicesListPage = (props) => {
           )
         ) : (
           <>
-            <div className='row inspring-thumbs'>
-              {storyArr.length > 0 ?
-                storyArr.map((story, index) => (
-                  <CardInspiring
-                    key={index}
-                    isHindi={state.isHindi}
-                    colSize={3}
-                    pageId={id}
-                    screenName={SCREEN_NAME.storyList}
-                    story={story}
-                    onStoreSession={handleStoreSession}
-                  />
-                ))
-                :
-                customSearchValue.length > 0 && storyArr.length === 0 && (
-                  <p className='notFoundMessageCustom'>No stories found with "{customSearchValue}"</p>
-                )}
-            </div>
+            {state.masterListLoading ? <PHCardLoader /> :
+              <div className='row inspring-thumbs'>
+               {/* <InfiniteScroll
+                className='row inspring-thumbs'
+                style={{ overflow: 'unset' }}
+                dataLength={storyArr.length}
+                next={throttledLoadMore}
+                hasMore={state.filterObject.hasMore}
+                scrollThreshold={0.9} 
+                scrollableTarget="window"
+              >
+              <InfiniteScroll
+                className='row inspring-thumbs'
+                style={{ overflow: 'unset' }}
+                dataLength={storyArr.length}
+                next={loadMore}
+                hasMore={hasMore}
+                loader={
+                  loading ? (
+                    <PHCardLoader />
+                  ) : null
+                }
+                scrollableTarget="window"
+              > */}
+                {storyArr.length > 0 ?
+                  storyArr.map((story, index) => (
+                    <CardInspiring
+                      key={index}
+                      isHindi={state.isHindi}
+                      colSize={3}
+                      pageId={id}
+                      screenName={SCREEN_NAME.storyList}
+                      story={story}
+                      onStoreSession={handleStoreSession}
+                      storyArr={storyArr}
+                    />
+                  ))
+                  :
+                  customSearchValue.length > 0 && storyArr.length === 0 && (
+                    <p className='notFoundMessageCustom'>No stories found with "{customSearchValue}"</p>
+                  )}
+              {/* </InfiniteScroll> */}
+              </div>
+            }
           </>)}
       </div>
       <StoryDetailPageFooterNew changeText={true} homepage={true} />

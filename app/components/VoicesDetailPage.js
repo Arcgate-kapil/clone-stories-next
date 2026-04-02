@@ -28,6 +28,7 @@ const VoicesDetailPage = (props) => {
   const router = useRouter();
   const id = params.id; // Assuming the route is [id].js or similar
   const search = searchParams.toString() ? `?${searchParams.toString()}` : '';
+  const categoryNew = id || 'top';
 
   const { width } = useWindowSize();
   const containerFluid = useRef();
@@ -44,6 +45,7 @@ const VoicesDetailPage = (props) => {
   const [voicesUrlExists, setVoicesUrlExists] = useState(null);
   const [navType, setNavType] = useState('fixedNav');
   const [userInfo, setUserInfo] = useState(null);
+  const [isSearchLoader, setIsSearchLoader] = useState(false);
 
   useEffect(() => {
     dispatch(setLayoverPlayBtn(false));
@@ -64,7 +66,7 @@ const VoicesDetailPage = (props) => {
   }
 
   useEffect(() => {
-    if (state.storyListing.length || state.storyListing.length == 0) {
+    if (state.storiesListing.length || state.storiesListing.length == 0 || isSearchLoader == false) {
       const getDataFromSession = sessionStorage.getItem(pathname);
       const cacheDataSession = sessionStorage.getItem('cacheData');
       if (pathname !== cacheDataSession) {
@@ -77,7 +79,7 @@ const VoicesDetailPage = (props) => {
         sessionStorage.removeItem(pathname);
         sessionStorageRef.current = false;
 
-        const allData = [...slicedData, ...state.storyListing];
+        const allData = [...slicedData, ...state.storiesListing];
         let jsonObject = allData.map(JSON.stringify);
         let uniqueSet = new Set(jsonObject);
         let uniqueArrayData = Array.from(uniqueSet).map(JSON.parse);
@@ -92,7 +94,7 @@ const VoicesDetailPage = (props) => {
           );
           return o;
         };
-        let newStoryListing = shuffle([...state.storyListing]);
+        let newStoryListing = shuffle([...state.storiesListing]);
         let number;
         if (pathname == '/voices' || pathname == '/hindi/voices') {
           number = 60;
@@ -104,7 +106,13 @@ const VoicesDetailPage = (props) => {
         sessionStorage.removeItem(pathname);
       }
     }
-  }, [state.storyListing]);
+  }, [state.storiesListing, isSearchLoader]);
+
+  useEffect(() => {
+      if (isSearchLoader) {
+        setStoryArr(state.storiesListing);
+      }
+    }, [state.storiesListing, isSearchLoader]);
 
   useEffect(() => {
     const shimmerMobile = shimmerMobileRef.current;
@@ -231,8 +239,8 @@ const VoicesDetailPage = (props) => {
 
   let storySlug = id;
 
-  if (!!state.storyListing && !!state.storyListing.length && !!id && !state.storyListLoading) {
-    const storySlugArr = state.storyListing.filter(o => o.storySlug == id);
+  if (!!state.storiesListing && !!state.storiesListing.length && !!id && !state.storyListLoading) {
+    const storySlugArr = state.storiesListing.filter(o => o.storySlug == id);
     if (!!storySlugArr && !!storySlugArr.length) {
       storySlug = storySlugArr[0].storyType;
     } else {
@@ -423,7 +431,7 @@ const VoicesDetailPage = (props) => {
           <div className='row justify-content-center pt-5'>
             <div className='col-xl-11 col-lg-12 col-md-12 col-sm-12 col-12 mb-3'>
               <div className='topHeading text-center mt-3'>
-                <h1 className='firstTitle'><span>{state.storyListing[0]?.storyType.toUpperCase()}</span></h1>
+                <h1 className='firstTitle'><span>{state.storiesListing[0]?.storyType.toUpperCase()}</span></h1>
                 <h1 className='secondTitle'>Get your single branding page and unique QR code to showcase your work with the power of video.</h1>
               </div>
             </div>
@@ -468,6 +476,8 @@ const VoicesDetailPage = (props) => {
               storyArr={storyArr}
               setStoryArr={setStoryArr}
               setCustomSearchValue={setCustomSearchValue}
+              categoryNew={categoryNew}
+              setIsSearchLoader={setIsSearchLoader}
               {...state}
             />
           </ErrorBoundary>

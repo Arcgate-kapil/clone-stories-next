@@ -9,7 +9,8 @@ function HomePageTrending(props) {
   const isHindi = useSelector(state => state.blog.isHindi);
   const trendingTags =
     useFetch(
-      'https://cdn.workmob.com/stories_workmob/promotional/Tags_bg/tags_bg.json'
+      // 'https://cdn.workmob.com/stories_workmob/promotional/Tags_bg/tags_bg.json'
+      'https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/tags_bg'
     ) || [];
 
   useEffect(() => {
@@ -34,7 +35,7 @@ function HomePageTrending(props) {
     <div className="container">
       <ListTitle title="Trending" link='tags' handleClick={props?.handleClick} zoom={true} />
       <div style={styles.trendings} className='trendingTags noScrollbar'>
-        {trendingTags.slice(0, 3).map((v, index) => (
+        {trendingTags?.data?.slice(0, 3).map((v, index) => (
           <Link
             style={styles.trending}
             key={index}

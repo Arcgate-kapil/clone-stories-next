@@ -61,16 +61,16 @@ const TagListPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    fetch('https://cdn.workmob.com/stories_workmob/promotional/tags_bg_10_june.json')
+    fetch('https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/tags_bg_10_june')
       .then(res => res.json())
       .then(data => {
         // if (mountedRef?.current) {
-        const singleData = data.find(
+        const singleData = data?.data?.find(
           tag => tag?.tag_name?.replace(/ /g, '-')?.toLowerCase() === id?.toLowerCase()
         );
         singleCardRef.current = singleData;
         setSingleCardData(singleData);
-        setTrendingTags(data);
+        setTrendingTags(data?.data);
         // }
       });
 

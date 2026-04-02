@@ -3,10 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import CloseBtn from '../common/CloseBtn';
 import CustomStyle from '../common/CustomStyle';
 import useWindowSize from '../../utils/useWindowSize';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { fetchCity, fetchCityNew } from '@/app/lib/features/blogSlice';
 
 function StoriesPageCategoryGrid({
   searchString,
@@ -19,8 +21,18 @@ function StoriesPageCategoryGrid({
   const state = useSelector(state => state.blog);
   const pathname = usePathname();
   const isLocationList = Array.isArray(locationList);
-  const [filteredList, setFilteredList] = useState(isLocationList ? locationList : categoryList);
+  // const [filteredList, setFilteredList] = useState(isLocationList ? locationList : categoryList);
+  const [filteredList, setFilteredList] = useState([]);
+  let dispatch = useDispatch();
   const { width } = useWindowSize();
+
+  useEffect(() => {
+    if (isLocationList) {
+      setFilteredList(locationList);
+    } else {
+      setFilteredList(categoryList);
+    }
+  }, [locationList]);
 
   function sortList(a, b) {
     const nameA = a[isLocationList ? 'location' : 'category'].toUpperCase();
@@ -76,6 +88,12 @@ function StoriesPageCategoryGrid({
     return () => document.head.removeChild(style);
   }, []);
 
+  const loadMore = () => {
+    if (state.hasMore) {
+      dispatch(fetchCityNew(state.lastKey));
+    }
+  };
+
   return (
     <div className='categories-optionsOverlay'>
       <CustomStyle>{styleString}</CustomStyle>
@@ -108,61 +126,65 @@ function StoriesPageCategoryGrid({
         handleClick={closeBtnAction ? closeBtnAction : closeOverlay}
         bgColor='rgb(195, 61, 235)'
       />
-      <div className='noScrollbar categories-gridContainer'>
-        {isLocationList ? (
-          <div className='categories-topRow' style={{ display: searchString ? 'none' : '' }}>
-            {filteredList.slice(0, 5).map((location, i) => (
-              <Link
-                className='categories-locationLink'
-                href={`${state.isHindi ? '/hindi' : ''}/local/${location.id.replace(/_/g, '-')}`}
-                key={i}
-                onClick={closeOverlay}
-              >
-                <img
-                  className='categories-optionsImage'
-                  src={`https://cdn.workmob.com/stories_workmob/images/${
-                    state.isHindi ? 'hindi_' : ''
-                  }locations/${location.id}.png`}
-                  alt={`${location.id} image`}
-                />
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <div
-            className='categories-topRow categories-categoryTopRow'
-            style={{ display: searchString ? 'none' : '' }}
-          >
-            {filteredList.slice(0, 5).map((category, index) => (
-              <Link
-                className='categories-categoryLink'
-                style={styles.optionLink}
-                onClick={closeOverlay}
-                key={index}
-                href={`${
-                  pathname.includes('/podcasts') ? '/podcasts' : `${state.isHindi ? '/hindi' : ''}/voices`
-                }/${category.category}`}
-              >
-                <img
-                  className='categories-optionsImage'
-                  src={`https://cdn.workmob.com/stories_workmob/images/category-bg/${category.category}.png`}
-                  alt={`${category.category} image`}
-                />
-              </Link>
-            ))}
-          </div>
-        )}
-
-        <div
-          style={
-            isLocationList
-              ? { gridTemplateColumns: searchString ? 'repeat(auto-fill, minmax(223px, 1fr))' : '' }
-              : { gridTemplateColumns: searchString ? 'repeat(auto-fill, minmax(250px, 1fr))' : '' }
-          }
-          className={`noScrollbar categories-` + (isLocationList ? 'locationGrid' : 'categoryGrid')}
+      <div id="scrollableCategories" className='noScrollbar categories-gridContainer'>
+        <InfiniteScroll
+          dataLength={filteredList?.length}
+          next={loadMore}
+          hasMore={state.hasMore}
+          scrollableTarget="scrollableCategories"
         >
-          {isLocationList
-            ? filteredList
+          {isLocationList ? (
+            <div className='categories-topRow' style={{ display: searchString ? 'none' : '' }}>
+              {filteredList.slice(0, 5).map((location, i) => (
+                <Link
+                  className='categories-locationLink'
+                  href={`${state.isHindi ? '/hindi' : ''}/local/${location.id.replace(/_/g, '-')}`}
+                  key={i}
+                  onClick={closeOverlay}
+                >
+                  <img
+                    className='categories-optionsImage'
+                    src={`https://cdn.workmob.com/stories_workmob/images/${state.isHindi ? 'hindi_' : ''
+                      }locations/${location.id}.png`}
+                    alt={`${location.id} image`}
+                  />
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div
+              className='categories-topRow categories-categoryTopRow'
+              style={{ display: searchString ? 'none' : '' }}
+            >
+              {filteredList.slice(0, 5).map((category, index) => (
+                <Link
+                  className='categories-categoryLink'
+                  style={styles.optionLink}
+                  onClick={closeOverlay}
+                  key={index}
+                  href={`${pathname.includes('/podcasts') ? '/podcasts' : `${state.isHindi ? '/hindi' : ''}/voices`
+                    }/${category.category}`}
+                >
+                  <img
+                    className='categories-optionsImage'
+                    src={`https://cdn.workmob.com/stories_workmob/images/category-bg/${category.category}.png`}
+                    alt={`${category.category} image`}
+                  />
+                </Link>
+              ))}
+            </div>
+          )}
+
+          <div
+            style={
+              isLocationList
+                ? { gridTemplateColumns: searchString ? 'repeat(auto-fill, minmax(223px, 1fr))' : '' }
+                : { gridTemplateColumns: searchString ? 'repeat(auto-fill, minmax(250px, 1fr))' : '' }
+            }
+            className={`noScrollbar categories-` + (isLocationList ? 'locationGrid' : 'categoryGrid')}
+          >
+            {isLocationList
+              ? filteredList
                 .slice(searchString || width <= 950 ? 0 : 5)
                 .sort(sortList)
                 .map((location, index) => (
@@ -175,14 +197,13 @@ function StoriesPageCategoryGrid({
                   >
                     <img
                       className='categories-optionsImage'
-                      src={`https://cdn.workmob.com/stories_workmob/images/${
-                        state.isHindi ? 'hindi_' : ''
-                      }locations/${location.id}.png`}
+                      src={`https://cdn.workmob.com/stories_workmob/images/${state.isHindi ? 'hindi_' : ''
+                        }locations/${location.id}.png`}
                       alt={`${location.id} image`}
                     />
                   </Link>
                 ))
-            : filteredList
+              : filteredList
                 .slice(searchString || width <= 950 ? 0 : 5)
                 .sort(sortList)
                 .map((category, index) => (
@@ -191,11 +212,10 @@ function StoriesPageCategoryGrid({
                     className='categories-categoryLink'
                     onClick={closeOverlay}
                     key={index}
-                    href={`${
-                      pathname.includes('/podcasts')
-                        ? '/podcasts'
-                        : `${state.isHindi ? '/hindi' : ''}/voices`
-                    }/${category.category}`}
+                    href={`${pathname.includes('/podcasts')
+                      ? '/podcasts'
+                      : `${state.isHindi ? '/hindi' : ''}/voices`
+                      }/${category.category}`}
                   >
                     <div className='categories-categoryPlaceholder'></div>
                     <img
@@ -205,7 +225,8 @@ function StoriesPageCategoryGrid({
                     />
                   </Link>
                 ))}
-        </div>
+          </div>
+        </InfiniteScroll>
       </div>
     </div>
   );

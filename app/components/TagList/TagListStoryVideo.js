@@ -519,7 +519,8 @@ function StoryDetailPageMoreVideos({ singleCardData }) { // Added storyDetail as
   const { metaDesc, storyHeading } = storyDetail;
 
   const userData = useFetch(
-    `https://cdn.workmob.com/stories_workmob/config/instructor/${singleCardValue}.json`
+    // `https://cdn.workmob.com/stories_workmob/config/instructor/${singleCardValue}.json`
+    `https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/instructors/${singleCardValue}`
   );
   const videoUrls =
     userData &&

@@ -1,21 +1,54 @@
 export const runtime = 'edge'; // or 'nodejs' depending on your environment
-const masterndexUrl = `https://cdn.workmob.com/stories_workmob/config/MasterIndex.json`;
+// const masterndexUrl = `https://cdn.workmob.com/stories_workmob/config/MasterIndex.json`;
+const masterndexUrl = `https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/stories`;
 // const trendingTagsUrl = 'https://cdn.workmob.com/stories_workmob/config/tags_master.json';
-const trendingTagsUrl = 'https://cdn.workmob.com/stories_workmob/promotional/tags_bg_10_june.json';
-const locationsUrl = 'https://cdn.workmob.com/stories_workmob/config/LocationMaster.json';
-const categoriesUrl = 'https://cdn.workmob.com/stories_workmob/config-latest/category.json';
+const trendingTagsUrl = 'https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/master_tag';
+// const locationsUrl = 'https://cdn.workmob.com/stories_workmob/config/LocationMaster.json';
+const locationsUrl = 'https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/locations';
+const categoriesUrl = 'https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/config-latest-category?limit=80';
+
+async function fetchAllStories() {
+  const allStories = [];
+  let lastKey = null;
+
+  while (true) {
+    const url = lastKey
+      ? `${masterndexUrl}?lastKey=${encodeURIComponent(lastKey)}`
+      : `${masterndexUrl}?limit=100`;
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    // Aapke response me "data" array tha
+    const records = Array.isArray(data?.data) ? data.data : Array.isArray(data) ? data : [];
+    
+    // hide=1 wale skip karo
+    const visible = records.filter(item => item.hide !== 1);
+    allStories.push(...visible);
+
+    console.log(`Fetched ${allStories.length} stories so far...`);
+
+    // hasMore false ya lastKey nahi aaya to band karo
+    if (!data.hasMore || !data.lastKey) break;
+
+    lastKey = data.lastKey;
+  }
+  return allStories;
+}
 
 async function fetchUrlData() {
    try {
-    const [trendingTagsRes, masterIndexRes, locationsRes, categoriesRes] = await Promise.all([
+    // const [trendingTagsRes, masterIndexRes, locationsRes, categoriesRes] = await Promise.all([
+      const [trendingTagsRes, masterIndex, locationsRes, categoriesRes] = await Promise.all([
       fetch(trendingTagsUrl),
-      fetch(masterndexUrl),
+      fetchAllStories(),
+      // masterndexUrl,
       fetch(locationsUrl),
       fetch(categoriesUrl),
     ]);
     // Parse JSON from responses
     const trendingTags = await trendingTagsRes.json();
-    const masterIndex = await masterIndexRes.json();
+    // const masterIndex = await masterIndexRes.json();
     const locations = await locationsRes.json();
     const categories = await categoriesRes.json();
    
@@ -42,9 +75,9 @@ export async function generateSitemap(data) {
 
    const blogsId = data.masterIndex.map(blog => ({slug: blog.slug}));
   // const tagsId = data.trendingTags.map(tags => ({id: tags.tag.toLowerCase().replace(/ /g, '-')}))
-  const tagsId = data.trendingTags.map(tags => ({id: tags.tag_name.toLowerCase().replace(/ /g, '-')}))
-  const locationsId = data.locations.map(location => ({id: location.id.replace(/_/g, '-')}));
-  const categoriesId = data.categories.map(category => ({id: category.category}));
+  const tagsId = data.trendingTags.data.map(tags => ({id: tags.tag_name.toLowerCase().replace(/ /g, '-')}))
+  const locationsId = data.locations.locations.map(location => ({id: location.id.replace(/_/g, '-')}));
+  const categoriesId = data?.categories?.data.map(category => ({id: category.category}));
 
   // Static routes
    const staticRoutes = [
@@ -77,32 +110,32 @@ export async function generateSitemap(data) {
     lastModified: new Date(),
   }));
   // Dynamic routes for tags
-  const tagRoutes = data.trendingTags.map(tags => ({
+  const tagRoutes = data?.trendingTags?.data.map(tags => ({
     // url: `${baseUrl}/tags/${tags.tag.toLowerCase().replace(/ /g, '-')}`,
     url: `${baseUrl}/tags/${tags.tag_name.toLowerCase().replace(/ /g, '-')}`,
     lastModified: new Date(),
   }));
-  const hindiTagRoutes = data.trendingTags.map(tags => ({
+  const hindiTagRoutes = data?.trendingTags?.data.map(tags => ({
     // url: `${baseUrl}/hindi/tags/${tags.tag.toLowerCase().replace(/ /g, '-')}`,
     url: `${baseUrl}/hindi/tags/${tags.tag_name.toLowerCase().replace(/ /g, '-')}`,
     lastModified: new Date(),
   }));
   // Dynamic routes for locations
-  const locationRoutes = data.locations.map(location => ({
+  const locationRoutes = data.locations.locations.map(location => ({
     url: `${baseUrl}/local/${location.id.replace(/_/g, '-')}`,
     lastModified: new Date(),
   }));
 
-  const hindiLocationRoutes = data.locations.map(location => ({
+  const hindiLocationRoutes = data.locations.locations.map(location => ({
     url: `${baseUrl}/hindi/local/${location.id.replace(/_/g, '-')}`,
     lastModified: new Date(),
   }));
   // Dynamic routes for categories
-  const categoryRoutes = data.categories.map(category => ({
+  const categoryRoutes = data?.categories?.data.map(category => ({
     url: `${baseUrl}/voices/${category.category}`,
     lastModified: new Date(),
   }));
-  const hindiCategoryRoutes = data.categories.map(category => ({
+  const hindiCategoryRoutes = data?.categories?.data.map(category => ({
     url: `${baseUrl}/hindi/voices/${category.category}`,
     lastModified: new Date(),
   }));
