@@ -93,7 +93,7 @@ export default async function middleware(request) {
         </html>
       `;
 
-  if (pathname === '/' || pathname === '/hindi' || pathname.startsWith('/categories') || pathname.startsWith('/hindi/categories') || pathname.startsWith('/about') || pathname.startsWith('/hindi/about') || pathname.startsWith('/merikahani') || pathname.startsWith('/hindi/merikahani') || pathname.startsWith('/admin') || pathname === '/create' || pathname === '/hindi/create' || pathname === '/sitemap.xml') {
+  if (pathname === '/' || pathname === '/hindi' || pathname.startsWith('/categories') || pathname.startsWith('/hindi/categories') || pathname.startsWith('/about') || pathname.startsWith('/hindi/about') || pathname.startsWith('/merikahani') || pathname.startsWith('/hindi/merikahani') || pathname.startsWith('/admin') || pathname === '/create' || pathname === '/hindi/create' || pathname === '/sitemap.xml' || pathname === '/apple-app-site-association.json' || pathname === '/.well-known') {
     // Proceed directly to next-intl middleware without API check
     return createMiddleware(routing)(request);
   }
@@ -130,9 +130,10 @@ export default async function middleware(request) {
       return createMiddleware(routing)(request);
     } else {
       let newPathname = currentPathname[0] == 'hindi' ? currentPathname[2] : currentPathname[1];
+      let convertedPathname = newPathname.replace(/-/g, "_");
       try {
-        // const apiResponse = await fetch(`https://cdn.workmob.com/stories_workmob/config-latest/locations/${newPathname}.json`, {
-        const apiResponse = await fetch(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/config-latest-locations-${newPathname}?limit=100`, {
+        // const apiResponse = await fetch(`https://cdn.workmob.com/stories_workmob/config-latest/locations/${convertedPathname}.json`, {
+        const apiResponse = await fetch(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/config-latest-locations-${convertedPathname}?limit=100`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -293,5 +294,6 @@ export default async function middleware(request) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next|.*\\..*).*)'],
+  // matcher: ['/((?!api|_next|.*\\..*).*)'],
+   matcher: ['/((?!api|_next|sitemap.xml|apple-app-site-association.json|.well-known|favicon.ico|robots.txt).*)'],
 };

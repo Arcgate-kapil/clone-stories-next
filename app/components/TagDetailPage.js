@@ -169,6 +169,10 @@ const TagDetailPage = () => {
     };
   }, []);
 
+   const handleStoreSession = () => {
+    sessionStorage.setItem('cacheData', pathname);
+  };
+
   useEffect(() => {
     const style = document.head.appendChild(document.createElement('style'));
     const tempStyle = `
@@ -227,6 +231,7 @@ const TagDetailPage = () => {
           screenName={SCREEN_NAME.storyList}
           story={story}
           key={`${story.thumb}${index}`}
+          onStoreSession={handleStoreSession}
         />
       ));
     } else {
@@ -252,7 +257,8 @@ const TagDetailPage = () => {
    const handleBackClick = (e) => {
     e.preventDefault();
     // router.push(state.isHindi ? '/hindi/tags' : '/tags');
-    router.back();
+    // router.back();
+    router.push(state.isHindi ? '/hindi' : '/');
   }
 
   useEffect(() => {
@@ -369,8 +375,8 @@ const TagDetailPage = () => {
         <div className='row justify-content-center pt-5'>
           <div className='col-lg-10 col-md-12 col-sm-12 col-12 mb-3'>
             <div className='topHeading text-center mt-5'>
-              <h1 className='firstTitle'><span>{id.replace(/-/g, ' ').toUpperCase()}</span></h1>
-              <h1 className='secondTitle'>Get your single branding page and unique QR code to showcase your work with the power of video.</h1>
+              <h1 className='firstTitle hpSimplified'><span>{id.replace(/-/g, ' ').toUpperCase()}</span></h1>
+              <h1 className='secondTitle hpSimplified'>Get your single branding page and unique QR code to showcase your work with the power of video.</h1>
             </div>
           </div>
           <div className='col-lg-9 col-md-10 col-sm-12 col-11'>

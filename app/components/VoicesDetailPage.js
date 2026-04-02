@@ -431,8 +431,8 @@ const VoicesDetailPage = (props) => {
           <div className='row justify-content-center pt-5'>
             <div className='col-xl-11 col-lg-12 col-md-12 col-sm-12 col-12 mb-3'>
               <div className='topHeading text-center mt-3'>
-                <h1 className='firstTitle'><span>{state.storiesListing[0]?.storyType.toUpperCase()}</span></h1>
-                <h1 className='secondTitle'>Get your single branding page and unique QR code to showcase your work with the power of video.</h1>
+                <h1 className='firstTitle hpSimplified'><span>{state.storiesListing[0]?.storyType.toUpperCase()}</span></h1>
+                <h1 className='secondTitle hpSimplified'>Get your single branding page and unique QR code to showcase your work with the power of video.</h1>
               </div>
             </div>
             <div className='col-lg-9 col-md-10 col-sm-12 col-11'>

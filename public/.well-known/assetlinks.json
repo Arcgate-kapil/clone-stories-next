@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.workmob",
+      "sha256_cert_fingerprints": [
+           "C7:D8:2B:03:1F:2A:11:82:3A:0D:03:64:3D:F6:92:94:47:D4:D9:39:82:EB:0C:68:06:86:89:9A:09:77:12:EF",
+        "0B:E3:BF:6E:66:51:74:6C:ED:59:A9:19:E1:95:35:65:77:40:5F:EE:54:99:41:15:B5:3C:64:A7:75:09:9A:50"
+      ]
+    }
+  }
+]

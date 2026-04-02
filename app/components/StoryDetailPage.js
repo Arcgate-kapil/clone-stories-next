@@ -75,7 +75,7 @@ const StoryDetailPage = (props) => {
       />
       <section style={{ paddingLeft: width > 767 && width < 1400 ? '26px' : '', paddingRight: width > 767 && width < 1400 ? '26px' : ''}} className='story-detail-page'>
         <ErrorBoundary>
-          <StoryDetailPageBanner storyDetail={props?.storyDetail} />
+          <StoryDetailPageBanner storyDetail={props?.storyDetail} vCardData={props?.vCardData} setVCard={props?.setVCard} />
         </ErrorBoundary>
 
         {/* Uncommented the commented sections as they seem functional */}

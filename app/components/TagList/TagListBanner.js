@@ -110,7 +110,7 @@ const TagListBanner = props => {
             <div className='col-12'>
               <h1 className='taglist-container'>
                 <span className='TaglistBanner-title'>
-                  <span className='TagListPage-tagName'>
+                  <span className='TagListPage-tagName hpSimplified'>
                     {pathname === '/tags/' ||
                     pathname === '/tags' ||
                     pathname === '/hindi/tags/' ||

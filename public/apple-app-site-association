@@ -1,0 +1,35 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": [
+          "D529L5JK24.com.workmob"
+        ],
+        "paths": [
+          "/*"
+        ],
+        "components": [
+          {
+            "/": "/*",
+            "comment": "Handles all paths for local.workmob.com"
+          }
+        ]
+      },
+      {
+        "appIDs": [
+          "D529L5JK24.com.workmob"
+        ],
+        "paths": [
+          "/*"
+        ],
+        "components": [
+          {
+            "/": "/*",
+            "comment": "Handles all paths for stories.workmob.com"
+          }
+        ]
+      }
+    ]
+  }
+}

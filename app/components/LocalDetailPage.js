@@ -303,13 +303,13 @@ const LocalDetailPage = (props) => {
 
   const handleBackClick = (e) => {
     e.preventDefault();
-    // router.push(state.isHindi ? '/hindi/local' : '/local');
-    const getcacheDataFromSession = sessionStorage.getItem('cacheData');
-    if (getcacheDataFromSession == null) {
-      state.isHindi ? router.replace('/hindi/local') : router.replace('/local');
-    } else {
-      state.isHindi ? (getcacheDataFromSession.startsWith('/hindi') ? router.replace(getcacheDataFromSession) : router.replace(`/hindi${getcacheDataFromSession}`)) : (getcacheDataFromSession.startsWith('/hindi') ? router.replace(getcacheDataFromSession?.slice(6)) : router.replace(getcacheDataFromSession));
-    }
+    router.push(state.isHindi ? '/hindi/local' : '/local');
+    // const getcacheDataFromSession = sessionStorage.getItem('cacheData');
+    // if (getcacheDataFromSession == null) {
+    //   state.isHindi ? router.replace('/hindi/local') : router.replace('/local');
+    // } else {
+    //   state.isHindi ? (getcacheDataFromSession.startsWith('/hindi') ? router.replace(getcacheDataFromSession) : router.replace(`/hindi${getcacheDataFromSession}`)) : (getcacheDataFromSession.startsWith('/hindi') ? router.replace(getcacheDataFromSession?.slice(6)) : router.replace(getcacheDataFromSession));
+    // }
   }
 
   useEffect(() => {
@@ -427,8 +427,8 @@ const LocalDetailPage = (props) => {
         <div className='row justify-content-center pt-5'>
           <div className='col-xl-11 col-lg-12 col-md-12 col-sm-12 col-12 mb-3'>
             <div className='topHeading text-center mt-3'>
-              <h1 className='firstTitle'>Are you <span>{capitalizeEachWord(id.replace(/-/g, ' '))}'s</span> local professional, business owner or startup?</h1>
-              <h1 className='secondTitle'>Get your single branding page and unique QR code to showcase your work with the power of video.</h1>
+              <h1 className='firstTitl hpSimplifiede'>Are you <span>{capitalizeEachWord(id.replace(/-/g, ' '))}'s</span> local professional, business owner or startup?</h1>
+              <h1 className='secondTitle hpSimplified'>Get your single branding page and unique QR code to showcase your work with the power of video.</h1>
             </div>
           </div>
           <div className='col-lg-9 col-md-10 col-sm-12 col-11'>

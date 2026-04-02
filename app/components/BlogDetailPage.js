@@ -63,12 +63,12 @@ const BlogDetailPage = (props) => {
   useEffect(() => {
     const hash = window.location.hash;
     const search = window.location.search;
-    if (hash.includes("#guid=") && search.includes("?src=vcAppQr") && hash.split("#guid=")[1].length == 16 && state.blogDetail?.consent_received == true) {
+    if (hash.includes("#guid=") && search.includes("?src=vcAppQr") && hash.split("#guid=")[1] == state?.blogDetail?.user_guid && state.blogDetail?.show_contact == true && vCardData?.length > 0 && state.blogDetail?.hasOwnProperty("user_guid") && state.blogDetail?.hasOwnProperty("show_contact")) {
       dispatch(setVCard(true));
     } else {
       dispatch(setVCard(false));
     }
-  }, [pathname, searchParams, state.blogDetail]);
+  }, [pathname, searchParams, vCardData?.length]);
 
   const handleToggle = () => {
     setIsActive((prev) => !prev);
@@ -191,7 +191,8 @@ const BlogDetailPage = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://s3.ap-south-1.amazonaws.com/cdn.workmob.com/stories_workmob/vcards${pathname}.vcf`);
+        let newPath = pathname.startsWith('/hindi') ? pathname.slice('/hindi'.length) : pathname;
+        const response = await fetch(`https://s3.ap-south-1.amazonaws.com/cdn.workmob.com/stories_workmob/vcards${newPath}.vcf`);
         if (response?.status == 200) {
           const data = await response.text();
           parseVCardForPhoto(data);
@@ -320,6 +321,10 @@ const BlogDetailPage = (props) => {
       setIsActive(false);
     }
   };
+
+  const handleCloseVcfContact = () => {
+    dispatch(setVCard(false))
+  }
 
   useEffect(() => {
     // Add event listener for clicks outside
@@ -458,7 +463,7 @@ const BlogDetailPage = (props) => {
             </div>
           </nav>
         </div>
-        {state.isVCardShow && vCardData.length > 0 && (
+        {/* {state.isVCardShow && vCardData.length > 0 && (
           <div className='upload-section'>
             <div className='row justify-content-center align-items-center h-100'>
               <div className='col-xl-3 col-lg-5 col-md-7 col-sm-9 col-10'>
@@ -495,12 +500,76 @@ const BlogDetailPage = (props) => {
               </div>
             </div>
           </div>
+        )} */}
+         {state.isVCardShow && vCardData.length > 0 && (
+          <div className='upload-section'>
+            <div className='row justify-content-center align-items-center h-100'>
+              <div className='col-xl-5 col-lg-7 col-md-9 col-sm-10 col-11'>
+                {/* <div className='col-xl-6 col-lg-7 col-md-9 col-sm-10 col-11'> */}
+                <div className='upload-video-section px-4 py-5 position-relative'>
+                  <span className='position-absolute d-flex' style={{ right: "-8px", top: "-8px", cursor: 'pointer' }} onClick={handleCloseVcfContact}>
+                    <img src='https://cdn.workmob.com/stories_workmob/images/cross-icon.png' alt='Close Icon' width='31px' height='31px' />
+                  </span>
+                  <h2 className='main-title'>{props?.feedDetail?.name}</h2>
+                  <h2 className='sub-title'>{props?.feedDetail?.job_title}, {props?.feedDetail?.organisation != 'NoOrganisation' && props?.feedDetail?.organisation + ','} {props?.feedDetail?.location?.charAt(0).toUpperCase() + props?.feedDetail?.location?.slice(1).toLowerCase()}</h2>
+                  {/* <h2 className='sub-sub-title'>{qrData['TEL;TYPE=CELL']}</h2> */}
+                  <div className='bothButton'>
+                    <button
+                      onClick={(e) => handleCall(e)}
+                      type='submit'
+                      className='btn btn-primary border-0 buttonSubmitCall font-alata'
+                    >
+                      Call now
+                    </button>
+                    <button
+                      onClick={(e) => downloadVCard(e)}
+                      type='submit'
+                      className='btn btn-primary border-0 buttonSubmitSave font-alata'
+                      style={{ marginRight: '18px' }}
+                    >
+                      Save Contact
+                    </button>
+                    <a
+                      target='_blank'
+                      href={
+                        `https://wa.me/${qrData['TEL;TYPE=WhatsApp']}?text=` +
+                        (props?.feedDetail?.workmobUserName
+                          ? `I want to connect with @${props?.feedDetail?.workmobUserName}`
+                          : 'I want to join your movement.')
+                      }
+                      style={styles.iconLinkNew}
+                    >
+                      <svg
+                        width='48'
+                        height='48'
+                        viewBox='0 0 48 48'
+                        style={{ ...styles.iconSvgNew, margin: 0 }}
+                      >
+                        <path
+                          d='M11.61,44.575a23.825,23.825,0,0,0,12.306,3.408A24.123,24.123,0,0,0,48,23.992a23.992,23.992,0,1,0-44.575,12.4L0,48ZM2.829,23.992a21.079,21.079,0,1,1,9.744,17.873l-.541-.345L4.159,43.842l2.323-7.874-.345-.54A21.176,21.176,0,0,1,2.829,23.992Zm0,0'
+                          transform='translate(0 -0.001)'
+                          fill='#fff'
+                        />
+                        <path
+                          d='M121.461,103.719a21.526,21.526,0,0,0,17.265,17.265c2.836.54,7,.622,9.033-1.413l1.134-1.134a3.031,3.031,0,0,0,0-4.287l-4.535-4.535a3.032,3.032,0,0,0-4.287,0l-1.134,1.134a2.017,2.017,0,0,1-2.7.008l-4.523-4.713-.02-.021a1.781,1.781,0,0,1,0-2.516l1.134-1.134a3.029,3.029,0,0,0,0-4.287l-4.535-4.535a3.035,3.035,0,0,0-4.287,0l-1.134,1.134h0c-1.623,1.624-2.165,5.085-1.413,9.034Zm3.432-7.014c1.19-1.163,1.127-1.185,1.258-1.185a.175.175,0,0,1,.124.051c4.779,4.8,4.587,4.522,4.587,4.66a.172.172,0,0,1-.051.124l-1.134,1.134a4.632,4.632,0,0,0-.011,6.543l4.526,4.716.021.021a4.87,4.87,0,0,0,6.744,0l1.134-1.134a.176.176,0,0,1,.248,0c4.779,4.8,4.587,4.522,4.587,4.659a.171.171,0,0,1-.051.124l-1.134,1.134c-.777.777-3.252,1.242-6.48.627a18.671,18.671,0,0,1-14.994-14.994c-.615-3.228-.15-5.7.627-6.48Zm0,0'
+                          transform='translate(-110.025 -84.172)'
+                          fill='#fff'
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
         {!!state.blogDetail && state.blogDetail.category.toLowerCase() == 'stories' ? (
           <StoryDetailPage
             toggleHindButtonOnHeader={setHindiButtonView}
             isHindi={state.isHindi}
             // storyDetail={state.blogDetail}
+            vCardData={vCardData}
+            setVCard={setVCard}
             storyDetail={props.feedDetail}
             userClick={props?.location?.state?.userClick} // Adjust if needed; this might need to be passed differently
             isLayoverPlayBtn={state.isLayoverPlayBtn}
@@ -636,6 +705,14 @@ const styles = {
     paddingTop: 0,
     height: '100vh',
   },
+  iconLinkNew: {
+    color: 'inherit',
+  },
+  iconSvgNew: {
+    width: '2em',
+    height: '2em',
+    marginLeft: '1em',
+  },
 }
 
 const stylesCss = `
@@ -670,29 +747,40 @@ const stylesCss = `
     bottom: 0;
   }
   .upload-video-section {
-    background-color: rgba(4, 31, 74, 0.6);
+    // background-color: rgba(4, 31, 74, 0.6);
+    background-image: url('../../assets/vcf-bg.jpg');
     color: #fff;
-    padding: 27px 16px;
+    padding: 22px 29px !important;
+    // padding: 34px 37px !important;
     border-radius: 12px;
-    margin-bottom: 40px;
-    margin-top: 40px;
+    // margin-bottom: 40px;
+    // margin-top: 40px;
+    min-height: 331px;
+    // min-height: 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    background-size: cover;
   }
   .upload-video-section .main-title {
-    font-family: "Montserrat", sans-serif;
-    color: #fff;
-    font-weight: 500;
-    font-size: 18px;
-    margin-top: 18px;
-    line-height: 1.4;
-    margin-bottom: 0;
+    font-family: 'Bebas Neue', sans-serif;
+    color: #FFD736;
+    font-weight: 700;
+    font-size: 57px;
+    // font-size: 68px;
+    text-transform: uppercase;
+    line-height: 0.9;
+    letter-spacing: 1px;
+    margin-bottom: 11px;
   }
   .upload-video-section .sub-title {
-    font-family: "Montserrat", sans-serif;
+    font-family: HP Simplified;
     color: #fff;
-    font-weight: 500;
-    font-size: 18px;
-    margin-top: 9px;
-    line-height: 1.4;
+    font-weight: 400;
+    font-size: 31px;
+    // font-size: 40px;
+    margin-top: 0;
+    line-height: 1.2;
     margin-bottom: 0;
   }
   .upload-video-section .sub-sub-title {
@@ -705,26 +793,40 @@ const stylesCss = `
     margin-bottom: 30px;
   }
   .upload-video-section .buttonSubmitCall {
-    background-color: rgba(2, 50, 124, 1);
+    background-color: rgba(255, 255, 255, 0.2);
     border-radius: 100px;
     height: 40px;
-    padding-left: 40px;
-    padding-right: 40px;
+    padding-left: 23px;
+    padding-right: 23px;
+    font-weight: 500;
+    font-size: 16px;
+    margin-right: 15px;
+  }
+  .upload-video-section .buttonSubmitSave {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 100px;
+    height: 40px;
+    padding-left: 23px;
+    padding-right: 23px;
     font-weight: 500;
     font-size: 16px;
   }
-  .upload-video-section .buttonSubmitSave {
-    background-color: rgba(2, 50, 124, 1);
-    border-radius: 100px;
-    height: 40px;
-    padding-left: 30px;
-    padding-right: 30px;
-    font-weight: 500;
-    font-size: 16px;
+  .upload-video-section .buttonSubmitSave:not(:disabled):not(.disabled):active:focus {
+    box-shadow: none;
+  }
+  .upload-video-section .buttonSubmitSave:not(:disabled):not(.disabled):active {
+    background-color: rgba(130, 99, 79, 0.6);
+  }
+    .upload-video-section .buttonSubmitCall:not(:disabled):not(.disabled):active:focus {
+    box-shadow: none;
+  }
+  .upload-video-section .buttonSubmitCall:not(:disabled):not(.disabled):active {
+    background-color: rgba(130, 99, 79, 0.6);
   }
   .bothButton {
     display: flex;
-    justify-content: space-around;
+    margin-top: 27px;
+    align-items: center;
   }
   .maxHeightImage {
     max-height: 229px;
@@ -829,6 +931,61 @@ const stylesCss = `
     }
     .custom-px  { 
       padding: 3px 50px 4px 13px;
+    }
+  }
+  @media (max-width: 410px) {
+    .upload-video-section .main-title {
+       font-size: 33px !important;
+    }
+    .upload-video-section .sub-title {
+       font-size: 19px !important;
+    }
+    .upload-video-section .buttonSubmitCall {
+       display: flex;
+       align-items: center;
+       height: 32px !important;
+       padding-left: 19px !important;
+       padding-right: 19px !important;
+    }
+    .upload-video-section .buttonSubmitSave {
+       display: flex !important;
+       align-items: center !important;
+       height: 32px !important;
+       padding-left: 19px !important;
+       padding-right: 19px !important;
+    }
+    .upload-video-section {
+       padding: 29px 20px !important;
+       min-height: 250px !important;
+    }
+    .bothButton {
+       margin-top: 19px;
+    }
+  }
+  @media (min-width: 410px) and (max-width: 550px) {
+    .upload-video-section .main-title {
+       font-size: 45px !important;
+    }
+    .upload-video-section .sub-title {
+       font-size: 25px !important;
+    }
+    .upload-video-section .buttonSubmitCall {
+       display: flex;
+       align-items: center;
+       height: 32px !important;
+       padding-left: 19px !important;
+       padding-right: 19px !important;
+    }
+    .upload-video-section .buttonSubmitSave {
+       display: flex !important;
+       align-items: center !important;
+       height: 32px !important;
+       padding-left: 19px !important;
+       padding-right: 19px !important;
+    }
+    .upload-video-section {
+       padding: 29px 20px !important;
+       min-height: 292px !important;
     }
   }
   .new-hindi-button {

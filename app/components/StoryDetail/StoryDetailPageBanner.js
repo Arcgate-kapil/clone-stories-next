@@ -11,7 +11,7 @@ import useWindowSize from '@/app/utils/useWindowSize';
 import Modal from '../common/Modal/Modal';
 import SocialShare from '../common/SocialShare';
 import { COMMON_HASHTAG } from '@/app/constants/localString';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import CustomStyle from '../common/CustomStyle';
 import { StoryViewsFirebase } from '@/app/firebase/initFirebase';
 import { setLayoverPlayBtn } from '@/app/lib/features/blogSlice';
@@ -29,6 +29,7 @@ const StoryDetailPageBanner = (props) => {
   const pathname = usePathname();
   const state = useSelector((state) => state.blog);
   const isHindi = state.isHindi;
+  const dispatch = useDispatch();
 
   // Extract story details
   let {
@@ -124,6 +125,10 @@ const StoryDetailPageBanner = (props) => {
     }
   }
 
+  const handleOpenVcfContact = () => {
+    dispatch(props?.setVCard(true))
+  }
+
   // Helper: detect mobile
   function isMobile() {
     if (typeof window !== 'undefined') {
@@ -133,7 +138,7 @@ const StoryDetailPageBanner = (props) => {
     }
   }
 
-   const reactionIconsElem = (
+  const reactionIconsElem = (
     <>
       <div
         style={styles.reactionIconBackgroud}
@@ -425,7 +430,7 @@ const StoryDetailPageBanner = (props) => {
                   </blockquote>
                 )}
                 <div style={width < 969 ? { ...styles.socialLinksNow, marginBottom: '1em' } : { ...styles.socialLinks, marginBottom: '1em' }}>
-                  {socialLinksElem}
+                  {socialLinksElem} {props?.storyDetail?.show_contact && props?.vCardData.length > 0 && props?.storyDetail?.hasOwnProperty("show_contact") && <span onClick={handleOpenVcfContact} style={{ cursor: 'pointer' }} className='vcfContact'>Contact me</span>}
                 </div>
                 {downloadLinksElem}
               </div>
@@ -469,7 +474,7 @@ const StoryDetailPageBanner = (props) => {
         </div>
         {!!quote && <blockquote className='mobileNewQuotes' style={isHindi ? styles.hindibannerMobileQuote : styles.bannerMobileQuote}>{quote}</blockquote>}
         <div style={{ ...styles.socialLinksMobile, display: 'block !important' }}>
-          {socialLinksElem}
+          {socialLinksElem} {props?.storyDetail?.show_contact && props?.vCardData.length > 0 && props?.storyDetail?.hasOwnProperty("show_contact") && <span onClick={handleOpenVcfContact} style={{ cursor: 'pointer' }} className='vcfContact'>Contact me</span>}
         </div>
         <div style={styles.socialLinksMobile}>
           {downloadLinksElem}
@@ -529,6 +534,7 @@ const styleString = `
   .visitWebsiteBannerMob{
     background:none !important;
     border:1px solid white;
+    margin-right: 12px;
   }
   .newVisit {
     font-weight: 600;
@@ -603,6 +609,7 @@ const styleString = `
     .visitWebsiteBannerMob{
       line-height:1.7 !important;
       padding: 0.45em 0.8em !important;
+      margin-right: 12px;
     }
   }
   .font-color {
@@ -625,6 +632,20 @@ const styleString = `
   }
   .mb-18 {
       margin-bottom: 18px;
+  }
+       .vcfContact {
+      opacity: .5;
+      color: rgba(255, 255, 255, 1);
+      font-weight: 600;
+      font-size: 13px;
+      padding-top: .47em !important;
+      padding-bottom: .47em !important;
+      padding-left: 1.8em !important;
+      padding-right: 1.8em !important;
+      border: 2px solid rgba(255, 255, 255, 1);
+      border-radius: 9999px;
+      line-height: 1.7;
+      font-family: Montserrat, sans-serif;
   }
 `;
 
@@ -747,6 +768,7 @@ const styles = {
     whiteSpace: 'nowrap',
     textDecoration: 'none',
     // marginLeft: '1.1em',
+    marginRight: '14px',
   },
   appDownloadOverlay: {
     color: '#fff',

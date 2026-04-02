@@ -6,7 +6,8 @@ let cityDetail = [];
 
 async function fetchCityDetail(id) {
 
-  const response = await fetch(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/locations/${id}`);
+  let convertedPathname = id?.replace(/-/g, "_");
+  const response = await fetch(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/locations/${convertedPathname}`);
 
   if (!response.ok) {
     throw new Error('Failed to fetch city detail');

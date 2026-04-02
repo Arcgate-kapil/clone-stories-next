@@ -2,17 +2,32 @@
 import VoicesDetailPage from '@/app/components/VoicesDetailPage';
 import { STORY_LIST, HOST } from '@/app/constants/localString';
 
+async function fetchCategories() {
+
+  const response = await fetch(`https://cdn.workmob.com/stories_workmob/config-latest/category.json`);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch categories');
+  }
+  return response.json();
+}
+
 export async function generateMetadata({ params }) {
 
   let { locale, id } = await params;
-  // भारत के (एडवरटाइजिंग) प्रोफेशनल्स, स्टार्टअप्स और बिज़नेस ओनर्स की व्यक्तिगत एवं करियर यात्रा और व्यावसायिक ब्रांड कहानियां देखें। 
+
+  let categories = await fetchCategories();
+
+  const foundObject = categories.find(obj =>
+    Object.values(obj).includes(id)
+  );
 
   return {
-    title: locale == 'hindi' ? `भारत के ${id.replace(/_/g, ' ').replace(/^(.)|\s+(.)/g, c => c.toUpperCase())} प्रोफेशनल्स, स्टार्टअप्स और बिज़नेस ओनर्स की प्रेरक कहानियाँ।` : `${id.replace(/_/g, ' ').replace(/^(.)|\s+(.)/g, c => c.toUpperCase())} Professionals, Startups & Businesses from India | Video Stories & People`,
-    description: locale == 'hindi' ? `भारत के ${id.replace(/_/g, ' ').replace(/^(.)|\s+(.)/g, c => c.toUpperCase())} प्रोफेशनल्स, स्टार्टअप्स और बिज़नेस ओनर्स की व्यक्तिगत एवं करियर यात्रा और व्यावसायिक ब्रांड कहानियां देखें।` : `Watch personal, career journey and business brand stories of ${id.replace(/_/g, ' ').replace(/^(.)|\s+(.)/g, c => c.toUpperCase())} professionals, startups & business owners from India. Discover interesting people.`,
+    title: locale == 'hindi' ? `भारत के ${foundObject?.title} प्रोफेशनल्स, स्टार्टअप्स और बिज़नेस ओनर्स की प्रेरक कहानियाँ।` : `${foundObject?.title} Professionals, Startups & Businesses from India | Video Stories & People`,
+    description: locale == 'hindi' ? `भारत के ${foundObject?.title} प्रोफेशनल्स, स्टार्टअप्स और बिज़नेस ओनर्स की व्यक्तिगत एवं करियर यात्रा और व्यावसायिक ब्रांड कहानियां देखें।` : `Watch personal, career journey and business brand stories of ${foundObject?.title} professionals, startups & business owners from India. Discover interesting people.`,
     openGraph: {
-      title: locale == 'hindi' ? `भारत के ${id.replace(/_/g, ' ').replace(/^(.)|\s+(.)/g, c => c.toUpperCase())} प्रोफेशनल्स, स्टार्टअप्स और बिज़नेस ओनर्स की प्रेरक कहानियाँ।` : `${id.replace(/_/g, ' ').replace(/^(.)|\s+(.)/g, c => c.toUpperCase())} Professionals, Startups & Businesses from India | Video Stories & People`,
-      description: locale == 'hindi' ? `भारत के ${id.replace(/_/g, ' ').replace(/^(.)|\s+(.)/g, c => c.toUpperCase())} प्रोफेशनल्स, स्टार्टअप्स और बिज़नेस ओनर्स की व्यक्तिगत एवं करियर यात्रा और व्यावसायिक ब्रांड कहानियां देखें।` : `Watch personal, career journey and business brand stories of ${id.replace(/_/g, ' ').replace(/^(.)|\s+(.)/g, c => c.toUpperCase())} professionals, startups & business owners from India. Discover interesting people.`,
+      title: locale == 'hindi' ? `भारत के ${foundObject?.title} प्रोफेशनल्स, स्टार्टअप्स और बिज़नेस ओनर्स की प्रेरक कहानियाँ।` : `${foundObject?.title} Professionals, Startups & Businesses from India | Video Stories & People`,
+      description: locale == 'hindi' ? `भारत के ${foundObject?.title} प्रोफेशनल्स, स्टार्टअप्स और बिज़नेस ओनर्स की व्यक्तिगत एवं करियर यात्रा और व्यावसायिक ब्रांड कहानियां देखें।` : `Watch personal, career journey and business brand stories of ${foundObject?.title} professionals, startups & business owners from India. Discover interesting people.`,
       url: locale == 'hindi' ? HOST + '/hindi/voices/' + id : HOST + '/voices/' + id,
       siteName: STORY_LIST.siteName,
       images: [
@@ -20,14 +35,14 @@ export async function generateMetadata({ params }) {
           url: STORY_LIST.ogImage,
           width: 800,
           height: 400,
-          alt: `${id.replace(/_/g, ' ').replace(/^(.)|\s+(.)/g, c => c.toUpperCase())} Professionals, Startups & Businesses from India | Video Stories & People`,
+          alt: `${foundObject?.title} Professionals, Startups & Businesses from India | Video Stories & People`,
           secure_url: STORY_LIST.ogImage,
         },
         {
           url: STORY_LIST.ogImage,
           width: 1800,
           height: 1600,
-          alt: `${id.replace(/_/g, ' ').replace(/^(.)|\s+(.)/g, c => c.toUpperCase())} Professionals, Startups & Businesses from India | Video Stories & People`,
+          alt: `${foundObject?.title} Professionals, Startups & Businesses from India | Video Stories & People`,
           secure_url: STORY_LIST.ogImage,
         },
       ],
@@ -35,8 +50,8 @@ export async function generateMetadata({ params }) {
     },
     twitter: {
       card: "summary",
-      title: `${id.replace(/_/g, ' ').replace(/^(.)|\s+(.)/g, c => c.toUpperCase())} Professionals, Startups & Businesses from India | Video Stories & People`,
-      description: `Watch personal, career journey and business brand stories of ${id.replace(/_/g, ' ').replace(/^(.)|\s+(.)/g, c => c.toUpperCase())} professionals, startups & business owners from India. Discover interesting people.`,
+      title: `${foundObject?.title} Professionals, Startups & Businesses from India | Video Stories & People`,
+      description: `Watch personal, career journey and business brand stories of ${foundObject?.title} professionals, startups & business owners from India. Discover interesting people.`,
       url: locale == 'hindi' ? HOST + '/hindi/voices/' + id : HOST + '/voices/' + id,
       images: {
         url: STORY_LIST.ogImage,
@@ -58,6 +73,7 @@ export async function generateMetadata({ params }) {
 
 export default function page() {
 
-  return( 
+  return (
     <VoicesDetailPage />
-)}
+  )
+}
