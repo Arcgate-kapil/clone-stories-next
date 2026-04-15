@@ -104,7 +104,7 @@ export default async function middleware(request) {
     } else {
       let newPathname = currentPathname[0] == 'hindi' ? currentPathname[2] : currentPathname[1];
       try {
-        const apiResponse = await fetch(`https://cdn.workmob.com/stories_workmob/config-latest/category-index/${newPathname}.json`, {
+        const apiResponse = await fetch(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/config_latest_category_detail/${newPathname}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -115,7 +115,7 @@ export default async function middleware(request) {
             headers: { 'Content-Type': 'text/html' },
           });
         }
-
+    console.log('comess', apiResponse.status);
         if (apiResponse.ok) {
           const data = await apiResponse.json();
         } else {
@@ -133,7 +133,7 @@ export default async function middleware(request) {
       let convertedPathname = newPathname.replace(/-/g, "_");
       try {
         // const apiResponse = await fetch(`https://cdn.workmob.com/stories_workmob/config-latest/locations/${convertedPathname}.json`, {
-        const apiResponse = await fetch(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/config-latest-locations-${convertedPathname}?limit=100`, {
+        const apiResponse = await fetch(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/config_latest_locations/${convertedPathname}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -189,7 +189,11 @@ export default async function middleware(request) {
     } else {
       let newPathname = currentPathname[0] == 'hindi' ? currentPathname[2] : currentPathname[1];
       try {
-        const apiResponse = await fetch(`https://cdn.workmob.com/stories_workmob/config/audio-category-index/${newPathname}.json`, {
+        // const apiResponse = await fetch(`https://cdn.workmob.com/stories_workmob/config/audio-category-index/${newPathname}.json`, {
+        //   method: 'GET',
+        //   headers: { 'Content-Type': 'application/json' },
+        // });
+        const apiResponse = await fetch(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/audio_category_index/${newPathname}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -224,26 +228,26 @@ export default async function middleware(request) {
       let newPathname = currentPathname[0] == 'hindi' ? currentPathname[2] : currentPathname[1];
       let converted = newPathname.replace("-", "_");
       try {
-        // const apiResponse = await fetch(`https://cdn.workmob.com/stories_workmob/config/tags/${converted}.json`, {
-        //   method: 'GET',
-        //   headers: { 'Content-Type': 'application/json' },
-        // });
+        const apiResponse = await fetch(`https://cdn.workmob.com/stories_workmob/config/tags/${converted}.json`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
 
-        const newArr = ['indian-army', 'education', 'do-good']
+        // const newArr = ['indian-army', 'education', 'do-good']
 
-        if (!newArr.includes(newPathname)) {
-          return new NextResponse(htmlContent, {
-            status: 404,
-            headers: { 'Content-Type': 'text/html' },
-          });
-        }
-
-        // if (apiResponse.status == 404) {
+        // if (!newArr.includes(newPathname)) {
         //   return new NextResponse(htmlContent, {
         //     status: 404,
         //     headers: { 'Content-Type': 'text/html' },
         //   });
         // }
+
+        if (apiResponse.status == 404) {
+          return new NextResponse(htmlContent, {
+            status: 404,
+            headers: { 'Content-Type': 'text/html' },
+          });
+        }
 
         // if (apiResponse.ok) {
         //   const data = await apiResponse.json();
@@ -261,16 +265,20 @@ export default async function middleware(request) {
     const map = await getRedirectMap();
     if (map.has(lookupKey)) {
       const newSlug = map.get(lookupKey);
-      const newUrl = new URL(`/${newSlug}`, request.url);
+      // const newUrl = new URL(`/${newSlug}`, request.url);
+      const redirectPath = pathname.startsWith('/hindi') ? `/hindi/${newSlug}` : `/${newSlug}`;
+      const newUrl = new URL(redirectPath, request.url);
       newUrl.search = request.nextUrl.search;
-      return NextResponse.redirect(newUrl, { status: 302 }); // 302 for temporary redirect; use 301 for permanent
+      return NextResponse.redirect(newUrl, { status: 301 }); // 302 for temporary redirect; use 301 for permanent
     }
 
     try {
-      const apiResponse = await fetch(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/story-detail/${newPathname}`, {
+      const apiResponse = await fetch(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/story-detail${newPathname}`, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
+        headers: { 'User-Agent': 'PostmanRuntime/7.32.3', 'Accept': '*/*' },
+        cache: 'no-store'
+      });      
+      console.log('heyyy', apiResponse.status);
 
       if (apiResponse.status == 404) {
         // return new NextResponse('Not Found', { status: 404 });

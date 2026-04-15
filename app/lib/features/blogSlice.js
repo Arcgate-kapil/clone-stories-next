@@ -123,7 +123,7 @@ export const fetchBlogs = createAsyncThunk('blog/fetchBlogs', async (_, { reject
 
 export const fetchCategories = createAsyncThunk('blog/fetchCategories', async (_, { rejectWithValue }) =>
   // safeAxiosGet(`${API_BASE_URL_TOP}category.json`, rejectWithValue),
-  safeAxiosGet(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/config-latest-category?limit=100`, rejectWithValue),
+  safeAxiosGet(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/config_latest_category`, rejectWithValue),
 );
 
 export const fetchCity = createAsyncThunk('blog/fetchCity', async (_, { rejectWithValue }) =>
@@ -176,8 +176,8 @@ export const fetchStoryListing = createAsyncThunk(
     if (!category) {
       return rejectWithValue('Category is required to fetch story listing');
     }
-    return safeAxiosGet(`${category == 'top' ? 'https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/stories-top?limit=60' : `${API_BASE_URL_TOP}category-index/${category}.json`}`, rejectWithValue);
-    //  return safeAxiosGet(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/stories-top?limit=60`, rejectWithValue);
+    // return safeAxiosGet(`${category == 'top' ? 'https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/stories-top?limit=60' : `${API_BASE_URL_TOP}category-index/${category}.json`}`, rejectWithValue);
+     return safeAxiosGet(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/config_latest_category_detail/${category}`, rejectWithValue);
     // return safeAxiosGet(`${API_BASE_URL_TOP}category-index/${category}.json`, rejectWithValue);
   },
 );
@@ -229,7 +229,8 @@ export const fetchStoryListingByLocation = createAsyncThunk(
       return rejectWithValue('City is required to fetch listing');
     }
     const sanitized = city.replace(/-/g, '_');
-    return safeAxiosGet(`${API_BASE_URL_TOP}locations/${sanitized}.json`, rejectWithValue);
+    // return safeAxiosGet(`${API_BASE_URL_TOP}locations/${sanitized}.json`, rejectWithValue);
+    return safeAxiosGet(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/config_latest_locations/${sanitized}`, rejectWithValue);
     // return safeAxiosGet(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/config-latest-locations-${sanitized}?limit=100`, rejectWithValue);
   },
 );
@@ -269,7 +270,8 @@ export const fetchHomePodcastListing = createAsyncThunk(
   'blog/fetchHomePodcastListing',
   async (params, { rejectWithValue }) => {
     const category = typeof params === 'string' ? params : params?.category ?? 'top';
-    return safeAxiosGet(`${API_BASE_URL}audio-category-index/${category}.json`, rejectWithValue);
+    // return safeAxiosGet(`${API_BASE_URL}audio-category-index/${category}.json`, rejectWithValue);
+    return safeAxiosGet(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/audio_category_index/${category}`, rejectWithValue);
   },
 );
 
@@ -280,7 +282,8 @@ export const fetchPodcastListing = createAsyncThunk(
     if (!category) {
       return rejectWithValue('Category is required to fetch podcast listing');
     }
-    return safeAxiosGet(`${API_BASE_URL}audio-category-index/${category}.json`, rejectWithValue);
+    // return safeAxiosGet(`${API_BASE_URL}audio-category-index/${category}.json`, rejectWithValue);
+    return safeAxiosGet(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/audio_category_index/${category}`, rejectWithValue);
   },
 );
 
@@ -405,7 +408,7 @@ const blogSlice = createSlice({
         state.blogs.stories = Array.isArray(action?.payload?.data) ? action?.payload?.data : [];
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
-        const payload = Array.isArray(action.payload.data) ? action.payload.data : [];
+        const payload = Array.isArray(action?.payload?.categories) ? action?.payload?.categories : [];
         const arr1 = payload.filter((entry) => entry?.category === 'top');
         const arrOther = payload.filter((entry) => entry?.category === 'other');
         const arr2 = payload.filter(
@@ -462,8 +465,8 @@ const blogSlice = createSlice({
         state.storyListLoading = true;
       })
       .addCase(fetchStoryListing.fulfilled, (state, action) => {
-        // const data = Array.isArray(action?.payload?.stories) ? action?.payload?.stories : [];
-        const data = Array.isArray(action?.meta?.arg == 'top' ? action?.payload?.data : action?.payload) ? action?.meta?.arg == 'top' ? action?.payload?.data : action?.payload : [];
+        const data = Array.isArray(action?.payload?.stories) ? action?.payload?.stories : [];
+        // const data = Array.isArray(action?.meta?.arg == 'top' ? action?.payload?.data : action?.payload) ? action?.meta?.arg == 'top' ? action?.payload?.data : action?.payload : [];
         state.storyListing = data;
         state.storyListingStorage = data;
         state.storyListLoading = false;
@@ -475,7 +478,7 @@ const blogSlice = createSlice({
         state.storiesListLoading = true;
       })
       .addCase(fetchStoriesListing.fulfilled, (state, action) => {
-        const data = Array.isArray(action?.payload.stories) ? action?.payload.stories : [];
+        const data = Array.isArray(action?.payload.data) ? action?.payload.data : [];
         // const data = Array.isArray(action?.payload?.stories) ? action?.payload?.stories : [];
         state.storiesListing = data;
         state.storiesListingStorage = data;
@@ -488,7 +491,7 @@ const blogSlice = createSlice({
         state.storiesListLoading = true;
       })
       .addCase(fetchStoriesListingNew.fulfilled, (state, action) => {
-        const data = Array.isArray(action?.payload.stories) ? action?.payload.stories : [];
+        const data = Array.isArray(action?.payload.data) ? action?.payload.data : [];
         // const data = Array.isArray(action?.payload?.stories) ? action?.payload?.stories : [];
         state.storiesListing = data;
         state.storiesListingStorage = data;
@@ -540,8 +543,8 @@ const blogSlice = createSlice({
         state.storyListLoading = true;
       })
       .addCase(fetchStoryListingByLocation.fulfilled, (state, action) => {
-        // const data = Array.isArray(action.payload.data) ? action.payload.data : [];
-        const data = Array.isArray(action.payload) ? action.payload : [];
+        const data = Array.isArray(action.payload.data) ? action.payload.data : [];
+        // const data = Array.isArray(action.payload) ? action.payload : [];
         state.storyListing = data;
         state.storyListingStorage = data;
         state.storyListLoading = false;
@@ -572,13 +575,13 @@ const blogSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchHomePodcastListing.fulfilled, (state, action) => {
-        state.podcastListingHome = Array.isArray(action.payload) ? action.payload : [];
+        state.podcastListingHome = Array.isArray(action?.payload?.tags) ? action?.payload?.tags : [];
       })
       .addCase(fetchPodcastListing.pending, (state) => {
         state.storyListLoading = true;
       })
       .addCase(fetchPodcastListing.fulfilled, (state, action) => {
-        state.podcastListing = Array.isArray(action.payload) ? action.payload : [];
+        state.podcastListing = Array.isArray(action?.payload?.tags) ? action?.payload?.tags : [];
         state.storyListLoading = false;
       })
       .addCase(fetchPodcastListing.rejected, (state) => {

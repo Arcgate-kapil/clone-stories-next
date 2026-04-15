@@ -45,7 +45,7 @@ const StoryDetailPageContent = props => {
             <div
               ref={storyElemRef}
               className={`StoryDetailPageContent-story storyMainDetail ${state.isHindi ? 'new-font-khand' : ''} ` + (canShowMore ? 'StoryDetailPageContent-storyFull' : 'StoryDetailPageContent-storyShort')}
-              dangerouslySetInnerHTML={{ __html: state.isHindi ? fullStory_hindi : fullStory }}
+              dangerouslySetInnerHTML={{ __html: state.isHindi ? fullStory_hindi || fullStory : fullStory }}
             />
             {!!fullStory && (
               <button

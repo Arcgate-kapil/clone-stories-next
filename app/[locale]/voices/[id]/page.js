@@ -18,7 +18,7 @@ export async function generateMetadata({ params }) {
 
   let categories = await fetchCategories();
 
-  const foundObject = categories.find(obj =>
+  const foundObject = categories?.categories?.find(obj =>
     Object.values(obj).includes(id)
   );
 
@@ -60,11 +60,15 @@ export async function generateMetadata({ params }) {
     robots: {
       index: true,
       follow: true,
+      maxImagePreview: 'large'
     },
     alternates: {
       canonical: locale == 'hindi' ? HOST + '/hindi/voices/' + id : HOST + '/voices/' + id,
       languages: {
+        'en': `${HOST}/voices/${id}`,
         'en-US': `${HOST}/voices/${id}`,
+        'hi': `${HOST}/hindi/voices/${id}`,
+        'hi-IN': `${HOST}/hindi/voices/${id}`,
         'x-default': `${HOST}/voices/${id}`,
       },
     },

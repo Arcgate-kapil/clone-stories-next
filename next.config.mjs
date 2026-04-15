@@ -10,10 +10,10 @@ const nextConfig = {
     domains: ['cdn.workmob.com'],
   },
   turbopack: {},
-  matcher: [
-    '/', 
-    '/((?!api|_next|.*\\..*).*)' // This matches all except api, _next, and files with extensions
-  ],
+  // matcher: [
+  //   '/', 
+  //   '/((?!api|_next|.*\\..*).*)' 
+  // ],
 };
 
 export default withNextIntl(nextConfig);

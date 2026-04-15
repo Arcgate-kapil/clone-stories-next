@@ -77,11 +77,15 @@ export async function generateMetadata({ params }) {
     robots: {
       index: true,
       follow: true,
+      maxImagePreview: 'large'
     },
     alternates: {
       canonical: HOST + '/insights/' + decodedId,
       languages: {
+        'en': `${HOST}/insights/${decodedId}`,
         'en-US': `${HOST}/insights/${decodedId}`,
+        'hi': `${HOST}/insights/${decodedId}`,
+        'hi-IN': `${HOST}/insights/${decodedId}`,
         'x-default': `${HOST}/insights/${decodedId}`,
       },
     },

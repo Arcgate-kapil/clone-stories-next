@@ -44,11 +44,15 @@ export async function generateMetadata({ params }) {
     robots: {
       index: true,
       follow: true,
+      maxImagePreview: 'large'
     },
     alternates: {
       canonical: locale == 'hindi' ? HOST + '/hindi/create' : HOST + '/create',
       languages: {
-        'en-US': `${HOST}/`,
+        'en': `${HOST}/create`,
+        'en-US': `${HOST}/create`,
+        'hi': `${HOST}/hindi/create`,
+        'hi-IN': `${HOST}/hindi/create`,
         'x-default': `${HOST}/`,
       },
     },

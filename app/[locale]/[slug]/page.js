@@ -20,10 +20,10 @@ export async function generateMetadata({ params }) {
   const feedDetail = await fetchFeedDetail(slug);
 
   return {
-    title: locale == 'hindi' ? `${`${feedDetail.name_hindi}, ${feedDetail.company_name_hindi ? feedDetail.company_name_hindi + ' में' : ''} ${feedDetail.job_title_hindi}, ${feedDetail.location_hindi}`}` : `${`${feedDetail.name}, ${feedDetail.job_title}${feedDetail.company_name ? ' at ' + feedDetail.company_name : ''}, ${feedDetail.location.charAt(0).toUpperCase() + feedDetail.location.slice(1)} | Profile & Intro Video`}`,
+    title: locale == 'hindi' ? `${`${feedDetail.name_hindi}, ${feedDetail.company_name_hindi ? feedDetail.company_name_hindi + ' में' : ''} ${feedDetail.job_title_hindi}, ${feedDetail.location_hindi}`}` : `${`${feedDetail.name}, ${feedDetail.job_title}${feedDetail.company_name ? ' at ' + feedDetail.company_name : ''}, ${feedDetail.location.charAt(0).toUpperCase() + feedDetail.location.slice(1)} | Profile and Intro Video`}`,
     description: locale == 'hindi' ? `${`${feedDetail.name_hindi}, ${feedDetail.company_name_hindi ? feedDetail.company_name_hindi + ',' : ''} ${feedDetail.location_hindi} की प्रेरणादायक कहानी देखें।`}` : `${`Watch inspiring video story, intro video and see profile of ${feedDetail.name}, ${feedDetail.job_title}${feedDetail.company_name ? ' at ' + feedDetail.company_name : ''}, ${feedDetail.location.charAt(0).toUpperCase() + feedDetail.location.slice(1)}.`}`,
     openGraph: {
-      title: locale == 'hindi' ? `${`${feedDetail.name_hindi}, ${feedDetail.company_name_hindi ? feedDetail.company_name_hindi + ' में' : ''} ${feedDetail.job_title_hindi}, ${feedDetail.location_hindi}`}` : `${`${feedDetail.name}, ${feedDetail.job_title}${feedDetail.company_name ? ' at ' + feedDetail.company_name : ''}, ${feedDetail.location.charAt(0).toUpperCase() + feedDetail.location.slice(1)} | Profile & Intro Video`}`,
+      title: locale == 'hindi' ? `${`${feedDetail.name_hindi}, ${feedDetail.company_name_hindi ? feedDetail.company_name_hindi + ' में' : ''} ${feedDetail.job_title_hindi}, ${feedDetail.location_hindi}`}` : `${`${feedDetail.name}, ${feedDetail.job_title}${feedDetail.company_name ? ' at ' + feedDetail.company_name : ''}, ${feedDetail.location.charAt(0).toUpperCase() + feedDetail.location.slice(1)} | Profile and Intro Video`}`,
       description: locale == 'hindi' ? `${`${feedDetail.name_hindi}, ${feedDetail.company_name_hindi ? feedDetail.company_name_hindi + ',' : ''} ${feedDetail.location_hindi} की प्रेरणादायक कहानी देखें।`}` : `${`Watch inspiring video story, intro video and see profile of ${feedDetail.name}, ${feedDetail.job_title}${feedDetail.company_name ? ' at ' + feedDetail.company_name : ''}, ${feedDetail.location.charAt(0).toUpperCase() + feedDetail.location.slice(1)}.`}`,
       url: locale == 'hindi' ? HOST + '/hindi/' + slug : HOST + '/' + slug,
       siteName: HOME_PAGE.siteName,
@@ -32,14 +32,14 @@ export async function generateMetadata({ params }) {
           url: locale == 'hindi' ? feedDetail.mobileThumb_hindi : feedDetail.mobileThumb,
           width: 800,
           height: 400,
-          alt: locale == 'hindi' ? `${`${feedDetail.name_hindi}, ${feedDetail.company_name_hindi ? feedDetail.company_name_hindi + ' में' : ''} ${feedDetail.job_title_hindi}, ${feedDetail.location_hindi}`}` : `${`${feedDetail.name}, ${feedDetail.job_title}${feedDetail.company_name ? ' at ' + feedDetail.company_name : ''}, ${feedDetail.location.charAt(0).toUpperCase() + feedDetail.location.slice(1)} | Profile & Intro Video`}`,
+          alt: locale == 'hindi' ? `${`${feedDetail.name_hindi}, ${feedDetail.company_name_hindi ? feedDetail.company_name_hindi + ' में' : ''} ${feedDetail.job_title_hindi}, ${feedDetail.location_hindi}`}` : `${`${feedDetail.name}, ${feedDetail.job_title}${feedDetail.company_name ? ' at ' + feedDetail.company_name : ''}, ${feedDetail.location.charAt(0).toUpperCase() + feedDetail.location.slice(1)} | Profile and Intro Video`}`,
           secure_url: locale == 'hindi' ? feedDetail.mobileThumb_hindi : feedDetail.mobileThumb,
         },
         {
           url: locale == 'hindi' ? feedDetail.mobileThumb_hindi : feedDetail.mobileThumb,
           width: 1800,
           height: 1600,
-          alt: locale == 'hindi' ? `${`${feedDetail.name_hindi}, ${feedDetail.company_name_hindi ? feedDetail.company_name_hindi + ' में' : ''} ${feedDetail.job_title_hindi}, ${feedDetail.location_hindi}`}` : `${`${feedDetail.name}, ${feedDetail.job_title}${feedDetail.company_name ? ' at ' + feedDetail.company_name : ''}, ${feedDetail.location.charAt(0).toUpperCase() + feedDetail.location.slice(1)} | Profile & Intro Video`}`,
+          alt: locale == 'hindi' ? `${`${feedDetail.name_hindi}, ${feedDetail.company_name_hindi ? feedDetail.company_name_hindi + ' में' : ''} ${feedDetail.job_title_hindi}, ${feedDetail.location_hindi}`}` : `${`${feedDetail.name}, ${feedDetail.job_title}${feedDetail.company_name ? ' at ' + feedDetail.company_name : ''}, ${feedDetail.location.charAt(0).toUpperCase() + feedDetail.location.slice(1)} | Profile and Intro Video`}`,
           secure_url: locale == 'hindi' ? feedDetail.mobileThumb_hindi : feedDetail.mobileThumb,
         },
       ],
@@ -47,7 +47,7 @@ export async function generateMetadata({ params }) {
     },
     twitter: {
       card: "summary",
-      title: locale == 'hindi' ? `${`${feedDetail.name_hindi}, ${feedDetail.company_name_hindi ? feedDetail.company_name_hindi + ' में' : ''} ${feedDetail.job_title_hindi}, ${feedDetail.location_hindi}`}` : `${`${feedDetail.name}, ${feedDetail.job_title}${feedDetail.company_name ? ' at ' + feedDetail.company_name : ''}, ${feedDetail.location.charAt(0).toUpperCase() + feedDetail.location.slice(1)} | Profile & Intro Video`}`,
+      title: locale == 'hindi' ? `${`${feedDetail.name_hindi}, ${feedDetail.company_name_hindi ? feedDetail.company_name_hindi + ' में' : ''} ${feedDetail.job_title_hindi}, ${feedDetail.location_hindi}`}` : `${`${feedDetail.name}, ${feedDetail.job_title}${feedDetail.company_name ? ' at ' + feedDetail.company_name : ''}, ${feedDetail.location.charAt(0).toUpperCase() + feedDetail.location.slice(1)} | Profile and Intro Video`}`,
       description: locale == 'hindi' ? `${`${feedDetail.name_hindi}, ${feedDetail.company_name_hindi ? feedDetail.company_name_hindi + ',' : ''} ${feedDetail.location_hindi} की प्रेरणादायक कहानी देखें।`}` : `${`Watch inspiring video story, intro video and see profile of ${feedDetail.name}, ${feedDetail.job_title}${feedDetail.company_name ? ' at ' + feedDetail.company_name : ''}, ${feedDetail.location.charAt(0).toUpperCase() + feedDetail.location.slice(1)}.`}`,
       url: locale == 'hindi' ? HOST + '/hindi/' + slug : HOST + '/' + slug,
       images: {
@@ -57,11 +57,15 @@ export async function generateMetadata({ params }) {
     robots: {
       index: true,
       follow: true,
+      maxImagePreview: 'large'
     },
     alternates: {
-      canonical: locale == 'hindi' ? HOST + '/hindi/' + slug : HOST + '/' + slug,
+      canonical: locale == 'hindi' ? `${HOST}/hindi/${slug}` : `${HOST}/${slug}`,
       languages: {
+        'en': `${HOST}/${slug}`,
         'en-US': `${HOST}/${slug}`,
+        'hi': `${HOST}/hindi/${slug}`,
+        'hi-IN': `${HOST}/hindi/${slug}`,
         'x-default': `${HOST}/${slug}`,
       },
     },

@@ -110,13 +110,13 @@ const StoryDetailPageBanner = (props) => {
   };
 
   if (isHindi) {
-    storyHeading = storyHeading_hindi;
-    name = name_hindi;
-    location = location_hindi;
-    company_name = company_name_hindi;
-    quote = quote_hindi;
-    storyType = industry_hindi;
-    job_title = job_title_hindi;
+    storyHeading = storyHeading_hindi || storyHeading;
+    name = name_hindi || name;
+    location = location_hindi || location;
+    company_name = company_name_hindi || company_name;
+    quote = quote_hindi || quote;
+    storyType = industry_hindi || storyType;
+    job_title = job_title_hindi || job_title;
   }
 
   function closeAppDownloadOverlay(event) {

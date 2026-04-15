@@ -43,11 +43,15 @@ export async function generateMetadata({ params }) {
     robots: {
       index: true,
       follow: true,
+      maxImagePreview: 'large'
     },
     alternates: {
       canonical: HOST + '/insights',
       languages: {
+        'en': `${HOST}/insights`,
         'en-US': `${HOST}/insights`,
+        'hi': `${HOST}/insights`,
+        'hi-IN': `${HOST}/insights`,
         'x-default': `${HOST}/insights`,
       },
     },

@@ -104,10 +104,20 @@ export async function generateSitemap(data) {
   const blogRoutes = data.masterIndex.map(blog => ({
     url: `${baseUrl}/${blog.slug}`,
     lastModified: new Date(),
+    videoThumb: blog.mobileThumb || blog.thumb || "",
+    videoTitle: blog.storyHeading || blog.metaTitle || "",   // ← yeh add karo
+    videoDesc: blog.metaDesc || "",
+    videoUrl: `https://cdn.workmob.com/stories_workmob/videos/${blog?.slug}-${blog?.location}-video/${blog?.slug}-${blog?.location}-video.m3u8` || "",
+    image: blog.thumb || ""
   }));
   const hindiBlogRoutes = data.masterIndex.map(blog => ({
     url: `${baseUrl}/hindi/${blog.slug}`,
     lastModified: new Date(),
+    videoThumb: blog.mobileThumb || blog.thumb || "",
+    videoTitle: blog.storyHeading_hindi || blog.metaTitle_hindi || "",   // ← yeh add karo
+    videoDesc: blog.metaDesc || "",
+    videoUrl: `https://cdn.workmob.com/stories_workmob/videos/${blog?.slug}-${blog?.location}-video/${blog?.slug}-${blog?.location}-video.m3u8` || "",
+    image: blog.thumb || ""
   }));
   // Dynamic routes for tags
   const tagRoutes = data?.trendingTags?.data.map(tags => ({
@@ -150,27 +160,51 @@ export async function generateSitemap(data) {
     ...categoryRoutes,
     ...hindiCategoryRoutes];
 
+    function escapeXml(str) {
+    if (!str) return "";
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&apos;");
+  }
+
   // Generate XML
   const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
-  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
+    xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
+    xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     ${allRoutes
       .map(
-        (route) => `
+        (route) => {
+          return `
       <url>
-        <loc>${route.url}</loc>
+        <loc>${escapeXml(route.url)}</loc>
         <lastmod>${route.lastModified.toISOString()}</lastmod>
+        ${route.image ? `<image:image><image:loc>${escapeXml(route.image)}</image:loc></image:image>` : ""}
+        ${route.videoUrl ? `
+         <video:video>
+           <video:thumbnail_loc>${escapeXml(route.videoThumb)}</video:thumbnail_loc>
+           <video:title>${escapeXml(route.videoTitle)}</video:title>
+           <video:description>${escapeXml(route.videoDesc)}</video:description>
+           <video:content_loc>${escapeXml(route.videoUrl)}</video:content_loc>
+         </video:video>` : ""
+          }
       </url>
     `
-      )
+    })
       .join('')}
   </urlset>`;
 
   return new Response(sitemapXml, {
     status: 200,
     headers: {
-      'Content-Type': 'application/xml',
+      'Content-Type': 'application/xml; charset=utf-8',
       // Optional: cache control headers for ISR-like behavior
       'Cache-Control': 'public, max-age=3600, stale-while-revalidate=59',
+      'Access-Control-Allow-Origin': '*'
     },
   });
 }

@@ -17,7 +17,8 @@ async function fetchCategoryAudio() {
 
 async function fetchCategory(categ) {
 
-  const response = await fetch(`https://cdn.workmob.com/stories_workmob/config/audio-category-index/${categ}.json`);
+  // const response = await fetch(`https://cdn.workmob.com/stories_workmob/config/audio-category-index/${categ}.json`);
+  const response = await fetch(`https://r5dojmizdd.execute-api.ap-south-1.amazonaws.com/prod/audio_category_index/${categ}`);
 
   if (!response.ok) {
     throw new Error('Failed to fetch feed category');
@@ -71,11 +72,15 @@ export async function generateMetadata({ params }) {
       robots: {
         index: true,
         follow: true,
+        maxImagePreview: 'large'
       },
       alternates: {
         canonical: locale == 'hindi' ? HOST + '/hindi/podcasts/' + id : HOST + '/podcasts/' + id,
         languages: {
+          'en': `${HOST}/podcasts/${id}`,
           'en-US': `${HOST}/podcasts/${id}`,
+          'hi': `${HOST}/hindi/podcasts/${id}`,
+          'hi-IN': `${HOST}/hindi/podcasts/${id}`,
           'x-default': `${HOST}/podcasts/${id}`,
         },
       },
@@ -83,11 +88,11 @@ export async function generateMetadata({ params }) {
   } else {
     category = await fetchCategory(mainCategory[0].category);
     return {
-      title: locale == 'hindi' ? `${category[0].industry_hindi} प्रोफेशनल्स , स्टार्टअप और बिज़नेस पॉडकास्ट | ऑडियो स्टोरीज़` : `${category[0].industry} Professionals, Startups & Businesses Podcast | Audio Stories`,
-      description: locale == 'hindi' ? `वर्कमोब पॉडकास्ट पर कैटेगरी ${category[0].industry_hindi} के अनुसार भारत के प्रोफेशनल्स, बिज़नेस ओनर्स, स्टार्टअप्स और सोशल वर्कर्स की प्रेरक व्यक्तिगत कहानियां सुनें।` : `Hear inspiring personal, career journey and business brand stories of ${category[0].industry} professionals, startups & business owners from India.`,
+      title: locale == 'hindi' ? `${category?.tags[0].industry_hindi} प्रोफेशनल्स , स्टार्टअप और बिज़नेस पॉडकास्ट | ऑडियो स्टोरीज़` : `${category?.tags[0].industry} Professionals, Startups & Businesses Podcast | Audio Stories`,
+      description: locale == 'hindi' ? `वर्कमोब पॉडकास्ट पर कैटेगरी ${category?.tags[0].industry_hindi} के अनुसार भारत के प्रोफेशनल्स, बिज़नेस ओनर्स, स्टार्टअप्स और सोशल वर्कर्स की प्रेरक व्यक्तिगत कहानियां सुनें।` : `Hear inspiring personal, career journey and business brand stories of ${category?.tags[0].industry} professionals, startups & business owners from India.`,
       openGraph: {
-        title: locale == 'hindi' ? `${category[0].industry_hindi} प्रोफेशनल्स , स्टार्टअप और बिज़नेस पॉडकास्ट | ऑडियो स्टोरीज़` : `${category[0].industry} Professionals, Startups & Businesses Podcast | Audio Stories`,
-        description: locale == 'hindi' ? `वर्कमोब पॉडकास्ट पर कैटेगरी ${category[0].industry_hindi} के अनुसार भारत के प्रोफेशनल्स, बिज़नेस ओनर्स, स्टार्टअप्स और सोशल वर्कर्स की प्रेरक व्यक्तिगत कहानियां सुनें।` : `Hear inspiring personal, career journey and business brand stories of ${category[0].industry} professionals, startups & business owners from India.`,
+        title: locale == 'hindi' ? `${category?.tags[0].industry_hindi} प्रोफेशनल्स , स्टार्टअप और बिज़नेस पॉडकास्ट | ऑडियो स्टोरीज़` : `${category?.tags[0].industry} Professionals, Startups & Businesses Podcast | Audio Stories`,
+        description: locale == 'hindi' ? `वर्कमोब पॉडकास्ट पर कैटेगरी ${category?.tags[0].industry_hindi} के अनुसार भारत के प्रोफेशनल्स, बिज़नेस ओनर्स, स्टार्टअप्स और सोशल वर्कर्स की प्रेरक व्यक्तिगत कहानियां सुनें।` : `Hear inspiring personal, career journey and business brand stories of ${category?.tags[0].industry} professionals, startups & business owners from India.`,
         url: locale == 'hindi' ? HOST + '/hindi/podcasts/' + id : HOST + '/podcasts/' + id,
         siteName: STORY_LIST.siteName,
         images: [
@@ -95,14 +100,14 @@ export async function generateMetadata({ params }) {
             url: STORY_LIST.ogImage,
             width: 800,
             height: 400,
-            alt: `${category[0].industry} Professionals, Startups & Businesses Podcast | Audio Stories`,
+            alt: `${category?.tags[0].industry} Professionals, Startups & Businesses Podcast | Audio Stories`,
             secure_url: STORY_LIST.ogImage,
           },
           {
             url: STORY_LIST.ogImage,
             width: 1800,
             height: 1600,
-            alt: `${category[0].industry} Professionals, Startups & Businesses Podcast | Audio Stories`,
+            alt: `${category?.tags[0].industry} Professionals, Startups & Businesses Podcast | Audio Stories`,
             secure_url: STORY_LIST.ogImage,
           },
         ],
@@ -110,8 +115,8 @@ export async function generateMetadata({ params }) {
       },
       twitter: {
         card: "summary",
-        title: `${category[0].industry} Professionals, Startups & Businesses Podcast | Audio Stories`,
-        description: `Hear inspiring personal, career journey and business brand stories of ${category[0].industry} professionals, startups & business owners from India.`,
+        title: `${category?.tags[0].industry} Professionals, Startups & Businesses Podcast | Audio Stories`,
+        description: `Hear inspiring personal, career journey and business brand stories of ${category?.tags[0].industry} professionals, startups & business owners from India.`,
         url: locale == 'hindi' ? HOST + '/hindi/podcasts/' + id : HOST + '/podcasts/' + id,
         images: {
           url: STORY_LIST.ogImage,
@@ -120,11 +125,15 @@ export async function generateMetadata({ params }) {
       robots: {
         index: true,
         follow: true,
+        maxImagePreview: 'large'
       },
       alternates: {
         canonical: locale == 'hindi' ? HOST + '/hindi/podcasts/' + id : HOST + '/podcasts/' + id,
         languages: {
           'en-US': `${HOST}/podcasts/${id}`,
+          'en-US': `${HOST}/podcasts/${id}`,
+          'hi': `${HOST}/hindi/podcasts/${id}`,
+          'hi-IN': `${HOST}/hindi/podcasts/${id}`,
           'x-default': `${HOST}/podcasts/${id}`,
         },
       },
@@ -162,7 +171,7 @@ const Page = async ({ params }) => {
   }
 
   return (
-    <PodcastDetailPage initialData={initialData} category={category[0]} />
+    <PodcastDetailPage initialData={initialData} category={category?.tags[0]} />
   )
 }
 
