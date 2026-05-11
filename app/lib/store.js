@@ -3,15 +3,15 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import counterReducer from './features/counterReducer';
 import blogReducer from './features/blogSlice';
-
+ 
 const blogPersistConfig = {
   key: 'blog',
   storage,
   whitelist: ['isHindi', 'showHindButton'],
 };
-
+ 
 const persistedBlogReducer = persistReducer(blogPersistConfig, blogReducer);
-
+ 
 export function makeStore(preloadedState) {
   const store = configureStore({
     reducer: {
@@ -27,9 +27,9 @@ export function makeStore(preloadedState) {
         },
       }),
   });
-
+ 
   return store;
 }
-
+ 
 export const store = makeStore();
 export const persistor = persistStore(store);

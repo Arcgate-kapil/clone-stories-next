@@ -300,7 +300,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-image: url('https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.png');
+  background-image: url('https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.webp');
   background-size: 99% 100%;
   border: none;
 }
@@ -3469,7 +3469,7 @@ iframe .storyListing {
 }
 
 .footer-fixed .second-sec .btn {
-  background-image: url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.png);
+  background-image: url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.webp);
   background-size: 110%;
   background-position: center center;
   color: rgb(255, 255, 255);

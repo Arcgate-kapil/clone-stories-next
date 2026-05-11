@@ -1,0 +1,93 @@
+.headerPaddingTop{
+  padding-top:15.66%
+}
+ 
+.imagesContainer{
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width:100%
+}
+ 
+.elementToFadeInAndOut {
+  width:100%;
+  -webkit-animation: fadeinout 2s linear forwards;
+  animation: fadeinout 7s linear forwards;
+  opacity: 0;
+}
+ 
+@-webkit-keyframes fadeinout {
+50% { opacity: 1; }
+}
+ 
+@keyframes fadeinout {
+50% { opacity: 1; }
+}
+ 
+.infoHide{
+  width: 0;
+  height: 0;
+  font-size: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.infoHide h1, .infoHide h2{
+  width: 0;
+  height: 0;
+  font-size: 0;
+}
+  .HomePageBannerVideoContainer {
+    position: relative;
+    max-width:84%;
+    margin:0rem auto 2rem;
+    border-radius:1.5rem;
+    aspect-ratio: 26/4;
+    min-height: 150px;
+  }
+ 
+  .HomePageBanner-video {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius:1.5rem
+  }
+ 
+  .HomePageBanner-bottomContent {
+    font: bold 1.5em "Montserrat", sans-serif;
+  }
+ 
+  @media(max-width: 575px) {
+    .headerPaddingTop{
+      padding-top:23.66%
+    }
+    .HomePageBanner-bottomContent {
+      font-size: 12px;
+    }
+    .HomePageBannerVideoContainer {
+      max-width:100%;
+      margin:0rem auto 1rem;
+      border-radius:0.5rem
+    }
+    .HomePageBanner-video {
+      border-radius:0.5rem
+    }
+  }
+  
+ .bannerImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+ 
+.hiddenImage {
+  opacity: 0;
+  z-index: 1;
+}

@@ -7,7 +7,8 @@ import { getAltImg } from '../../utils';
 import { EVENT_TYPE } from '../../constants/firebaseString';
 // import { customEvent } from '@/app/firebase/firebase';
 import useWindowSize from '../../utils/useWindowSize';
-import CustomStyle from './CustomStyle';
+import stylesOne from './CardInspiringHomePage.module.css';
+// import CustomStyle from './CustomStyle';
 
 let CardInspiringHomePage = props => {
   const { width } = useWindowSize();
@@ -49,7 +50,7 @@ let CardInspiringHomePage = props => {
 
   return (
     <>
-      <CustomStyle>{stylesCss}</CustomStyle>
+      {/* <CustomStyle>{stylesCss}</CustomStyle> */}
       <Link
         onClick={() => {
           if (props?.onStoreSession) {
@@ -62,18 +63,28 @@ let CardInspiringHomePage = props => {
           pathname: `${isHindi ? 'hindi/' : '/'}${slug}`,
           state: { userClick: true },
         }}
-        className={`col-6 col-md-${colSize} mb-sm-5 mb-2 mt-2 px-xl-5 px-md-3 px-1 insipiringCardContent minHeight243 cardSingle${index}`}
+        className={`col-6 col-md-${colSize} mb-sm-5 mb-2 mt-2 px-xl-5 px-md-3 px-1 insipiringCardContent ${stylesOne.minHeight243} cardSingle${index}`}
       >
-        <div className='height100 h-100 betweenSec'>
+        <div className={`${stylesOne.height100} h-100 ${stylesOne.betweenSec}`}>
           <div
-            className={width > 767 ? 'hoverCard homepageVideoInspiringCard cardHovers h-100' : 'nocardHovers h-100'}
+            className={width > 767 ? `${stylesOne.hoverCard} ${stylesOne.homepageVideoInspiringCard} ${stylesOne.cardHovers} h-100` : `${stylesOne.nocardHovers} h-100`}
           >
-            <img
+            {/* <img
               loading='lazy'
               style={{ zIndex: 1 }}
               className='position-absolute w-100 h-100 frame'
-              src={'https://cdn.workmob.com/stories_workmob/images/common/phone-frame.png'}
+              src={'https://cdn.workmob.com/stories_workmob/images/common/phone-frame.webp'}
               alt='frame'
+            /> */}
+            <Image
+              src="https://cdn.workmob.com/stories_workmob/images/common/phone-frame.webp"
+              alt="frame"
+              fill
+              // loading="lazy"
+              priority
+              fetchPriority='high'
+              style={{ zIndex: 1 }}
+              className="position-absolute frame"
             />
             {/* <LazyLoadImage
             effect='blur'
@@ -83,20 +94,27 @@ let CardInspiringHomePage = props => {
             alt={getAltImg(thumb)}
             src={thumb}
           /> */}
-          <span className='w-100 lazyLoad-card-inspiring lazy-load-image-background blur lazy-load-image-loaded' style={{ color: 'transparent', display: 'inline-block', height: '100%' }}>
-            <Image
-              src={webpthumb ? webpthumb : thumb}
-              alt={getAltImg(thumb)}
-              width={500}
-              height={300}
-              placeholder="blur"
-              blurDataURL={thumb}
-              className='h-100 w-100 lazyLoad-card-inspiring'
-            />
+            <span className='w-100 lazyLoad-card-inspiring lazy-load-image-background blur lazy-load-image-loaded' style={{ color: 'transparent', display: 'inline-block', height: '100%' }}>
+              <Image
+                src={webpthumb ? webpthumb : thumb}
+                alt={getAltImg(thumb)}
+                width={500}
+                height={300}
+                loading={index < 2 ? "eager" : "lazy"}
+                priority={index < 2}
+                fetchPriority={index < 2 ? "high" : "auto"}
+                decoding="async"
+                // placeholder="blur"
+                // blurDataURL={thumb}
+                // priority   
+                quality={60}
+                className='h-100 w-100 lazyLoad-card-inspiring'
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
             </span>
             <div
               style={styles.bottomBg}
-              className='position-absolute w-100 py-lg-3 py-3 px-1 px-md-2 px-lg-2 px-xl-3 caption-container'
+              className={`position-absolute w-100 py-lg-3 py-3 px-1 px-md-2 px-lg-2 px-xl-3 ${stylesOne.captionContainer}`}
             >
               {!pageId && (
                 <p className='px-0 px-md-2 mb-0 category-badge'>
@@ -166,7 +184,6 @@ const styles = {
     borderRadius: 10,
     background: 'rgba(255,255,255,0.1)',
     boxShadow: '0px 6px 12px rgba(255,255,255,0.3)',
-    // aspectRatio: '50 / 89',
     position: 'absolute',
     top: '0',
     right: '0',
@@ -186,126 +203,101 @@ const styles = {
   },
 };
 
-const stylesCss = `
-.height100 {
-  height: 100%;
-  position: relative;
-}
-.paddingTops178 {
-  padding-top: 178%;
-  position: absolute;
-}
+// const stylesCss = `
 // .height100 {
+//   height: 100%;
 //   position: relative;
 // }
-// .paddingTops178 {
-//   padding-top: 178%;
+// .minHeight243 {
+//   min-height: 243px;
 // }
-.minHeight243 {
-  min-height: 243px;
-  // min-height: 100vh;
-}
-.homepageVideoInspiring{ 
-    border-radius: 44px;
-    position:absolute;
-    padding:5px;
-    bottom:0;
-    top:0;
-    left:0;
-    right:0;
-    width:100%;
-    height:100%;
-    object-fit:unset
-}
-.hoverCard{
-  border-radius: 30px;
-  overflow:hidden
-}
-.homepageVideoInspiringCard video{ 
-  border-radius: 44px;
-  position:absolute;
-  padding:5px;
-  bottom:0;
-  top:0;
-  left:0;
-  right:0;
-  width:100%;
-  height:100%;
-  object-fit:unset
-}
+// .homepageVideoInspiring{
+//   border-radius: 44px;
+//   position:absolute;
+//   padding:5px;
+//   bottom:0;
+//   top:0;
+//   left:0;
+//   right:0;
+//   width:100%;
+//   height:100%;
+//   object-fit:unset
+// }
+// .hoverCard{
+//   border-radius: 30px;
+//   overflow:hidden
+// }
+// .homepageVideoInspiringCard video{
+//   border-radius: 44px;
+//   position:absolute;
+//   padding:5px;
+//   bottom:0;
+//   top:0;
+//   left:0;
+//   right:0;
+//   width:100%;
+//   height:100%;
+//   object-fit:unset
+// }
 
-@media screen and (max-width: 767px) {
-  .homepageVideoInspiring{ 
-    border-radius: 10px !important;
-    padding:0
-  }
-  .homepageVideoInspiringCard video{
-    border-radius: 10px !important;
-    padding:0
-  }
-}
-@media screen and (max-width: 1100px) {
-  .homepageVideoInspiring{ 
-    border-radius: 22px !important;
-  }
-  .homepageVideoInspiringCard video{
-    border-radius: 22px !important;
-  }
-  .hoverCard{
-    border-radius: 22px;
-  }
-}
-@media screen and (max-width: 1600px) {
-  .homepageVideoInspiring{ 
-    border-radius: 30px;
-  }
-  .homepageVideoInspiringCard video{
-    border-radius: 30px;
-  }
-}
-.nocardHovers {
-  border-radius: 10px !important;
-    background: rgba(255,255,255,0.1);
-    box-shadow: rgba(255,255,255,0.3) 0px 6px 12px;
-    position: absolute;
-    // position: relative;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    overflow: hidden;
-    z-index: 1;
-    width: 100%;
-
-    // width: 100%;
-    // display: block;
-    // position: absolute;
-    // top: 0;
-    // right: 0;
-    // bottom: 0;
-    // left: 0;
-    // z-index: 1;
-    // overflow: hidden;
-    // border-radius: 1.4vw;
-}
-.cardHovers {
-  background: rgba(255,255,255,0.1);
-  box-shadow: rgba(255,255,255,0.3) 0px 6px 12px;
-  // aspectRatio: '50 / 89';
-  // position: relative;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-}
-.betweenSec::before {
-  content: "";
-  padding-top: 175%;
-  display: block;
-  border-radius: 2vw;
-  background: rgba(0, 0, 0, .5);
-  box-shadow: 0 6px 12px hsla(0, 0%, 100%, .3);
-},
-`;
+// @media screen and (max-width: 767px) {
+//   .homepageVideoInspiring{
+//     border-radius: 10px !important;
+//     padding:0
+//   }
+//   .homepageVideoInspiringCard video{
+//     border-radius: 10px !important;
+//     padding:0
+//   }
+// }
+// @media screen and (max-width: 1100px) {
+//   .homepageVideoInspiring{
+//     border-radius: 22px !important;
+//   }
+//   .homepageVideoInspiringCard video{
+//     border-radius: 22px !important;
+//   }
+//   .hoverCard{
+//     border-radius: 22px;
+//   }
+// }
+// @media screen and (max-width: 1600px) {
+//   .homepageVideoInspiring{
+//     border-radius: 30px;
+//   }
+//   .homepageVideoInspiringCard video{
+//     border-radius: 30px;
+//   }
+// }
+// .nocardHovers {
+//   border-radius: 10px !important;
+//   background: rgba(255,255,255,0.1);
+//   box-shadow: rgba(255,255,255,0.3) 0px 6px 12px;
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+//   bottom: 0;
+//   left: 0;
+//   overflow: hidden;
+//   z-index: 1;
+//   width: 100%;
+// }
+// .cardHovers {
+//   background: rgba(255,255,255,0.1);
+//   box-shadow: rgba(255,255,255,0.3) 0px 6px 12px;
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+//   bottom: 0;
+//   left: 0;
+//   width: 100%;
+// }
+// .betweenSec {
+//   position: relative;
+//   aspect-ratio: 9 / 16;
+//   width: 100%;
+// }
+// .caption-container {
+//   will-change: transform;
+// }
+// `;

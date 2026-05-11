@@ -420,7 +420,7 @@ const styles = {
     borderRadius: '50%',
     marginLeft: '0.5em',
     backgroundImage:
-      ' url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.png)',
+      ' url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.webp)',
     backgroundSize: '99% 100%',
     // backgroundColor: '#00000073',
     display: 'flex',
@@ -434,7 +434,7 @@ const styles = {
     height: '1.4em',
     borderRadius: '50%',
     backgroundImage:
-      'url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.png)',
+      'url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.webp)',
     backgroundSize: '99% 100%',
     cursor: 'pointer',
     display: 'flex',
@@ -444,7 +444,7 @@ const styles = {
   langButton: {
     border: 'none',
     backgroundImage:
-      'url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.png)',
+      'url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.webp)',
     backgroundSize: '99% 100%',
     backgroundColor: '#00000073',
   },
@@ -459,7 +459,7 @@ const styles = {
   },
   btn: {
     backgroundImage:
-      'url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.png)',
+      'url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.webp)',
     // backgroundColor: '#00000073',
     backgroundSize: '110%',
     backgroundPosition: 'center',

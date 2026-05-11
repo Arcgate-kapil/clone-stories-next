@@ -165,7 +165,7 @@ const MeriKhaniRules = (props) => {
                         className="mobile-container d-none d-md-block"
                       />
                       <img
-                        src="https://cdn.workmob.com/stories_workmob/images/common/phone-frame.png"
+                        src="https://cdn.workmob.com/stories_workmob/images/common/phone-frame.webp"
                         className="mobile-container d-block d-md-none"
                       />
                       <ReactHlsPlayer
@@ -286,7 +286,7 @@ const styleString = `
     position: absolute;
     left: 0;
     transform: translate(0, 20%);
-    background-image: url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.png);
+    background-image: url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.webp);
     background-size: 99% 100%;
     border-radius: 2rem;
 }
@@ -323,7 +323,7 @@ const styleString = `
     font: bold 1.2rem Alata, sans-serif;
     color: white;
     text-decoration: none;
-    background: url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.png) center center / 100% 100%;
+    background: url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.webp) center center / 100% 100%;
     border-radius: 50px;
     padding: 0.6rem 0;
     width: 160px; 
@@ -440,7 +440,7 @@ const styles = {
     position: 'absolute',
     left: '10%',
     backgroundImage:
-      'url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.png)',
+      'url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.webp)',
     backgroundSize: '99% 100%',
   },
   rulesContainer: {
@@ -495,7 +495,7 @@ const styles = {
     font: 'normal 16px Alata, sans-serif',
     color: WHITE,
     backgroundImage:
-      'url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.png)',
+      'url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.webp)',
     backgroundPosition: 'center',
     borderRadius: 100,
     display: 'block',
@@ -511,7 +511,7 @@ const styles = {
   lang: {
     font: 'normal 16px Alata, san-serif',
     backgroundImage:
-      'url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.png)',
+      'url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.webp)',
     backgroundPosition: 'center',
     borderRadius: '30px',
     padding: '0.3em 0.8em 0.4em',

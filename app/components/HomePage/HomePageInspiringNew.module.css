@@ -1,0 +1,8 @@
+.homepageInspiringStory{
+  margin-bottom:6rem
+}
+@media screen and (max-width: 767px) {
+  .homepageInspiringStory{
+    margin-bottom:0rem;
+  }
+}

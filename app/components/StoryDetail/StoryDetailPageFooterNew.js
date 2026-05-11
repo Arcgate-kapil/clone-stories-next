@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import CustomStyle from '../common/CustomStyle';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const StoryDetailPageFooterNew = (props) => {
   const { width } = useWindowSize();
@@ -26,180 +27,226 @@ const StoryDetailPageFooterNew = (props) => {
     <>
       <CustomStyle>{styleString}</CustomStyle>
       <div className={`container mx-width-cust-1300 ${pathname == '/merikahani' ? 'pb-84' : ''}`}>
-      <div className={`HomePageFooter ${pathname == '/merikahani' || pathname == '/hindi/merikahani' ? 'mt-3' : 'mt-5'}`} ref={footerRef}>
-        <div style={styles.container}>
-          {props?.isDetailPage ? null : <div className='footerWorkmobLogo'>
-            <img
-              width="172px"
-              height="100%"
-              src='https://cdn.workmob.com/stories_workmob/images/common/workmob_logo_new.png'
-              alt='logo'
-            />
-          </div>}
+        <div className={`HomePageFooter ${pathname == '/merikahani' || pathname == '/hindi/merikahani' ? 'mt-3' : 'mt-5'}`} ref={footerRef}>
+          <div style={styles.container}>
+            {props?.isDetailPage ? null : <div className='footerWorkmobLogo'>
+              <Image
+                src="https://cdn.workmob.com/stories_workmob/images/common/workmob_logo_new.webp"
+                alt="logo"
+                width={172}
+                height={31}
+              />
+              {/* <img
+                width="172px"
+                height="100%"
+                src='https://cdn.workmob.com/stories_workmob/images/common/workmob_logo_new.webp'
+                alt='logo'
+              /> */}
+            </div>}
 
-          {props?.isDetailPage ? null : <div className='footer-social-org text-nowrap fotter-links'>
-            <a
-              href='https://www.facebook.com/workmobapp/'
-              target='_blank'
-              className='btn btn-social-icon bg-transparent'
-            >
-              <img
-                width="100%"
-                height="100%"
-                src='https://cdn.workmob.com/stories_workmob/images/common/facebook.svg'
-                alt='fb'
-                className='fb'
-              />
-            </a>
-            <a
-              href='https://www.instagram.com/workmobapp/'
-              target='_blank'
-              className='btn btn-social-icon bg-transparent'
-            >
-              <img
-                width="100%"
-                height="100%"
-                src='https://cdn.workmob.com/stories_workmob/images/common/instagram.svg'
-                alt='instagram'
-                className='instagram'
-              />
-            </a>
-            <a
-              href='https://youtube.com/channel/UCqOjwc1ZJmhy5oJJM3rhziA'
-              target='_blank'
-              className='btn btn-social-icon bg-transparent'
-            >
-              <img
-                width="100%"
-                height="100%"
-                src='https://cdn.workmob.com/stories_workmob/images/common/youtube.svg'
-                alt='youtube'
-                className='youtube'
-              />
-            </a>
-            <a
-              href='https://twitter.com/Workmob'
-              target='_blank'
-              className='btn btn-social-icon bg-transparent'
-            >
-              <img
-                width="100%"
-                height="100%"
-                src='https://cdn.workmob.com/stories_workmob/images/common/twitter.svg'
-                alt='twitter'
-                className='twitter'
-              />
-            </a>
-            <a
-              href='https://www.linkedin.com/company/workmobapp/'
-              target='_blank'
-              className='btn btn-social-icon bg-transparent'
-            >
-              <img
-                width="100%"
-                height="100%"
-                src='https://cdn.workmob.com/stories_workmob/images/common/linkedin.svg'
-                alt='linkedin'
-                className='linkedin'
-              />
-            </a>
-          </div>}
+            {props?.isDetailPage ? null : <div className='footer-social-org text-nowrap fotter-links'>
+              <a
+                href='https://www.facebook.com/workmobapp/'
+                target='_blank'
+                className='btn btn-social-icon bg-transparent'
+              >
+                <img
+                  width="100%"
+                  height="100%"
+                  src='https://cdn.workmob.com/stories_workmob/images/common/facebook.svg'
+                  alt='fb'
+                  className='fb'
+                />
+              </a>
+              <a
+                href='https://www.instagram.com/workmobapp/'
+                target='_blank'
+                className='btn btn-social-icon bg-transparent'
+              >
+                <img
+                  width="100%"
+                  height="100%"
+                  src='https://cdn.workmob.com/stories_workmob/images/common/instagram.svg'
+                  alt='instagram'
+                  className='instagram'
+                />
+              </a>
+              <a
+                href='https://youtube.com/channel/UCqOjwc1ZJmhy5oJJM3rhziA'
+                target='_blank'
+                className='btn btn-social-icon bg-transparent'
+              >
+                <img
+                  width="100%"
+                  height="100%"
+                  src='https://cdn.workmob.com/stories_workmob/images/common/youtube.svg'
+                  alt='youtube'
+                  className='youtube'
+                />
+              </a>
+              <a
+                href='https://twitter.com/Workmob'
+                target='_blank'
+                className='btn btn-social-icon bg-transparent'
+              >
+                <img
+                  width="100%"
+                  height="100%"
+                  src='https://cdn.workmob.com/stories_workmob/images/common/twitter.svg'
+                  alt='twitter'
+                  className='twitter'
+                />
+              </a>
+              <a
+                href='https://www.linkedin.com/company/workmobapp/'
+                target='_blank'
+                className='btn btn-social-icon bg-transparent'
+              >
+                {/* <img
+                  width="100%"
+                  height="100%"
+                  src='https://cdn.workmob.com/stories_workmob/images/common/linkedin.svg'
+                  alt='linkedin'
+                  className='linkedin'
+                /> */}
+                <Image
+                  src="https://cdn.workmob.com/stories_workmob/images/common/linkedin.svg"
+                  alt="linkedin"
+                  width={24}
+                  height={24}
+                  className="linkedin"
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </a>
+            </div>}
 
-          <div className={`d-flex flex-md-row flex-column footer-links-main ${props?.isDetailPage ? 'mb-3' : ''}`}>
-            <div className='footer-links text-white font-12 mr-md-3 order-1 order-md-0 text-center'>
-              &copy; {new Date().getFullYear()} {state.isHindi ? 'वर्कमोब प्रा. लि. सभी अधिकार सुरक्षित।' : 'Workmob Pvt. Ltd. All rights reserved.'}
+            <div className={`d-flex flex-md-row flex-column footer-links-main ${props?.isDetailPage ? 'mb-3' : ''}`}>
+              <div className='footer-links text-white font-12 mr-md-3 order-1 order-md-0 text-center'>
+                &copy; {new Date().getFullYear()} {state.isHindi ? 'वर्कमोब प्रा. लि. सभी अधिकार सुरक्षित।' : 'Workmob Pvt. Ltd. All rights reserved.'}
+              </div>
+              <div className='mb-2 mb-md-0'>
+                <Link style={styles.footerLink} href={state.isHindi ? '/hindi/about' : '/about'} className='mr-4'>
+                  {state.isHindi ? 'जानकारी' : 'About'}
+                </Link>
+                <a
+                  style={styles.footerLink}
+                  href='https://www.workmob.com/terms'
+                  target='_blank'
+                  className='mr-4'
+                >
+                  {state.isHindi ? 'टर्म्स' : 'Terms'}
+                </a>
+                <a
+                  className='mr-4'
+                  style={styles.footerLink}
+                  href='https://www.workmob.com/legal'
+                  target='_blank'
+                >
+                  {state.isHindi ? 'लीगल' : 'Legal'}
+                </a>
+                <a
+                  className='mr-4'
+                  style={styles.footerLink}
+                  href='https://www.workmob.com/privacy'
+                  target='_blank'
+                >
+                  {state.isHindi ? 'प्राइवेसी' : 'Privacy'}
+                </a>
+                <a
+                  className='mr-md-3'
+                  style={styles.footerLink}
+                  href='https://www.workmob.com/brand-ambassador'
+                  target='_blank'
+                >
+                  {state.isHindi ? 'एम्बेसडर' : 'Ambassador'}
+                </a>
+              </div>
             </div>
-            <div className='mb-2 mb-md-0'>
-              <Link style={styles.footerLink} href={state.isHindi ? '/hindi/about' : '/about'} className='mr-4'>
-                {state.isHindi ? 'जानकारी' : 'About'}
-              </Link>
-              <a
-                style={styles.footerLink}
-                href='https://www.workmob.com/terms'
-                target='_blank'
-                className='mr-4'
-              >
-                {state.isHindi ? 'टर्म्स' : 'Terms'}
-              </a>
-              <a
-                className='mr-4'
-                style={styles.footerLink}
-                href='https://www.workmob.com/legal'
-                target='_blank'
-              >
-                {state.isHindi ? 'लीगल' : 'Legal'}
-              </a>
-              <a
-                className='mr-4'
-                style={styles.footerLink}
-                href='https://www.workmob.com/privacy'
-                target='_blank'
-              >
-                {state.isHindi ? 'प्राइवेसी' : 'Privacy'}
-              </a>
-              <a
-                className='mr-md-3'
-                style={styles.footerLink}
-                href='https://www.workmob.com/brand-ambassador'
-                target='_blank'
-              >
-                {state.isHindi ? 'एम्बेसडर' : 'Ambassador'}
-              </a>
-            </div>
-          </div>
             {props?.isDetailPage ? null : <div className='d-flex playStOreIcons'>
               <a
                 href='https://play.google.com/store/apps/details?id=com.workmob'
                 target='_blank'
                 className='mr-3'
               >
-                <img
+                {/* <img
                   className='w-100 h-100'
                   src='https://cdn.workmob.com/stories_workmob/web_home/googleplaystore.png'
                   loading="lazy"
                   alt='play store badge'
+                /> */}
+                <Image
+                  className="w-100"
+                  src="https://cdn.workmob.com/stories_workmob/web_home/googleplaystore.png"
+                  alt="play store badge"
+                  width={300}
+                  height={90}
+                  style={{ width: "100%", height: "100%" }}
                 />
               </a>
               <a
                 href='https://apps.apple.com/in/app/workmob-professional-network/id901802570'
                 target='_blank'
               >
-                <img
+                {/* <img
                   className='w-100 h-100'
                   src='https://cdn.workmob.com/stories_workmob/web_home/appstore.png'
                   loading="lazy"
                   alt='app store badge'
+                /> */}
+                <Image
+                  className="w-100 h-100"
+                  src="https://cdn.workmob.com/stories_workmob/web_home/appstore.png"
+                  alt="app store badge"
+                  width={300}
+                  height={90}
+                  style={{ width: "100%", height: "100%" }}
                 />
               </a>
             </div>}
-        </div>
-        <div style={styles.bottomContent}>
-          {props?.isDetailPage ? null : <p className='d-none d-md-block text-left hpSimplified font-regular font-26 mb-0' style={styles.bottomPara}>
-            Aapki Digital Pehchan
-          </p>}
+          </div>
+          <div style={styles.bottomContent}>
+            {props?.isDetailPage ? null : <p className='d-none d-md-block text-left hpSimplified font-regular font-26 mb-0' style={styles.bottomPara}>
+              Aapki Digital Pehchan
+            </p>}
             <div className='bottomFootImg d-grid-cust mb-4 mx-auto'>
-              <img
-              src="https://cdn.workmob.com/stories_workmob/images/Swadeshi.png"
+              <Image
+                src="https://cdn.workmob.com/stories_workmob/images/Swadeshi.webp"
+                alt="Made with love in bharat2"
+                width={165}
+                height={29}
+                className="mx-auto"
+                style={{ margin: props?.isDetailPage ? '0 auto' : '' }}
+              />
+              {/* <img
+              src="https://cdn.workmob.com/stories_workmob/images/Swadeshi.webp"
               alt='Made with love in bharat2'
-              width={width < 821 && width > 767 ? '165' : '165'}
-              height={width < 821 && width > 767 ? '29' : '29'}
+              width='165'
+              height='29'
               className={width < 768 ? 'mx-auto' : 'mx-auto'}
               style={{ margin: props?.isDetailPage ? '0 auto' : ''}}
-            />
-            <img
-              src="https://cdn.workmob.com/stories_workmob/web_home/made-with-love-in-bharat-new.png"
-              alt='Made with love in bharat2'
-              width={width < 821 && width > 767 ? '154' : '200'}
-              height={width < 821 && width > 767 ? '25' : '36'}
-              className={width < 768 ? 'mb-0 mx-auto' : 'mb-0'}
-              style={{ margin: props?.isDetailPage ? '0 auto' : ''}}
-            />
+            /> */}
+              {/* <img
+                src="https://cdn.workmob.com/stories_workmob/web_home/made-with-love-in-bharat-new.webp"
+                alt='Made with love in bharat2'
+                width={width < 821 && width > 767 ? '154' : '200'}
+                height={width < 821 && width > 767 ? '25' : '36'}
+                className={width < 768 ? 'mb-0 mx-auto' : 'mb-0'}
+                style={{ margin: props?.isDetailPage ? '0 auto' : '' }}
+              /> */}
+              <Image
+                src="https://cdn.workmob.com/stories_workmob/web_home/made-with-love-in-bharat-new.webp"
+                alt="Made with love in bharat2"
+                width={width < 821 && width > 767 ? 154 : 200}
+                height={width < 821 && width > 767 ? 25 : 36}
+                className={width < 768 ? 'mb-0 mx-auto' : 'mb-0'}
+                style={{ margin: props?.isDetailPage ? '0 auto' : '' }}
+              />
             </div>
-          {props?.isDetailPage ? null : <p className='d-none d-md-block text-right hpSimplified font-regular font-26 mb-0' style={styles.bottomPara}>
-            We can. Bharat can.
-          </p>}
+            {props?.isDetailPage ? null : <p className='d-none d-md-block text-right hpSimplified font-regular font-26 mb-0' style={styles.bottomPara}>
+              We can. Bharat can.
+            </p>}
+          </div>
         </div>
-      </div>
       </div>
     </>
   );

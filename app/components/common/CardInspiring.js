@@ -61,7 +61,7 @@ const CardInspiring = (props) => {
         <div style={{ paddingTop: '178%' }}></div>
         <div style={styles.card}>
           <Image
-            src="https://cdn.workmob.com/stories_workmob/images/common/phone-frame.png"
+            src="https://cdn.workmob.com/stories_workmob/images/common/phone-frame.webp"
             alt="frame"
             fill
             style={{ zIndex: 1 }}

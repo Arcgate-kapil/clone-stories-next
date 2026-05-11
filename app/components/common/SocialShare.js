@@ -20,6 +20,7 @@ import { PURPLE } from '../../constants/colors';
 import { EVENT_TYPE } from '../../constants/firebaseString';
 import { customEvent } from '@/app/firebase/firebase';
 import useWindowSize from '../../utils/useWindowSize';
+import Image from 'next/image';
 
 const SocialShare = (props) => {
   const {
@@ -145,9 +146,17 @@ const SocialShare = (props) => {
               className="rounded-circle d-flex align-items-center justify-content-center border-0"
               style={{ width: iconSize, height: iconSize, background: PURPLE }}
             >
-              <img
+              {/* <img
                 width={width < 768 ? 20 : 12}
                 src="https://cdn.workmob.com/stories_workmob/images/common/link.svg"
+              /> */}
+              <Image
+                src="https://cdn.workmob.com/stories_workmob/images/common/link.svg"
+                alt="link icon"
+                width={width < 768 ? 20 : 12}
+                height={width < 768 ? 20 : 12}
+                priority
+                quality={60}
               />
               <input type="text" ref={hiddenInputRef} hidden />
             </button>

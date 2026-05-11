@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { ORANGE } from '../../constants/colors';
 import ReadTranscription from '../common/ReadTranscription';
 import { useSelector } from 'react-redux';
@@ -20,21 +20,45 @@ const StoryDetailPageContent = props => {
 
   useEffect(() => {
     if (!storyElemRef.current || !fullStory) return;
-    
     const storyElem = storyElemRef.current;
-    const firstPara = storyElem.querySelectorAll('p')[0];
-  
 
     if (canShowMore) {
       storyElem.style.height = '';
+      return;
     }
-    
-    else {
-      setTimeout(() => {
-        storyElem.style.height = `${firstPara.getBoundingClientRect().bottom - storyElem.getBoundingClientRect().top}px`;
-      }, 50);
-    }
+
+    const applyHeight = () => {
+      const firstPara = storyElem.querySelector('p');
+      if (!firstPara) return;
+      const height = firstPara.offsetTop + firstPara.offsetHeight;
+      if (height > 0) storyElem.style.height = `${height}px`;
+    };
+
+    // Try immediately, then observe for layout changes
+    applyHeight();
+    const observer = new ResizeObserver(applyHeight);
+    observer.observe(storyElem);
+
+    return () => observer.disconnect();
   }, [state.isHindi, fullStory, canShowMore]);
+
+  // useEffect(() => {
+  //   if (!storyElemRef.current || !fullStory) return;
+
+  //   const storyElem = storyElemRef.current;
+  //   const firstPara = storyElem.querySelectorAll('p')[0];
+
+
+  //   if (canShowMore) {
+  //     storyElem.style.height = '';
+  //   }
+
+  //   else {
+  //     setTimeout(() => {
+  //       storyElem.style.height = `${firstPara.getBoundingClientRect().bottom - storyElem.getBoundingClientRect().top}px`;
+  //     }, 50);
+  //   }
+  // }, [state.isHindi, fullStory, canShowMore]);
 
   return (
     <>
@@ -45,7 +69,7 @@ const StoryDetailPageContent = props => {
             <div
               ref={storyElemRef}
               className={`StoryDetailPageContent-story storyMainDetail ${state.isHindi ? 'new-font-khand' : ''} ` + (canShowMore ? 'StoryDetailPageContent-storyFull' : 'StoryDetailPageContent-storyShort')}
-              dangerouslySetInnerHTML={{ __html: state.isHindi ? fullStory_hindi || fullStory : fullStory }}
+              dangerouslySetInnerHTML={{ __html: state.isHindi ? fullStory_hindi?.replace(/^"+|"+$/g, '') || fullStory?.replace(/^"+|"+$/g, '') : fullStory?.replace(/^"+|"+$/g, '') }}
             />
             {!!fullStory && (
               <button
@@ -85,6 +109,14 @@ const styleString = `
 
   .storyMainDetail h3 {
     line-height: 30px !important;
+  }
+  
+  .storyMainDetail ul {
+    font-family: Baskervville;
+    margin-bottom: 0;
+  }
+  .storyMainDetail ul li {
+    padding: 7px 0;
   }
 
   .StoryDetailPageContent-storyFull > :last-child {

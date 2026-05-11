@@ -171,11 +171,20 @@ const VideoContainerDetailPageWeb = (props) => {
     <>
       <CustomStyle>{styleString}</CustomStyle>
       <div className='videoContainerMailDiv'>
-        <img
+        {/* <img
           loading='eager'
           className='mobileframe'
           src='https://workmob-v3.s3.ap-south-1.amazonaws.com/stories_workmob/images/common/phone-frame.png'
           alt='frame'
+        /> */}
+        <Image
+          priority
+          className="mobileframe"
+          // src="https://workmob-v3.s3.ap-south-1.amazonaws.com/stories_workmob/images/common/phone-frame.png"
+          src="https://cdn.workmob.com/stories_workmob/images/common/phone-frame.png"
+          alt="frame"
+          width={500}
+          height={1000}
         />
         <div onClick={cardVideoClick} className={`videoContainerDetail ${width < 900 ? 'border-rr-10' : ''}`}>
           <ReactHlsPlayer

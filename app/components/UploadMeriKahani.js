@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import { SCREEN_NAME } from '../constants/firebaseString';
 import { trackScreen } from '../firebase/firebase';
-import ReactHlsPlayer from '../components/HSL/components/react-hls-player';
+import ReactHlsPlayer from './HSL/components/react-hls-player';
 import { setHindiView } from '../lib/features/blogSlice';
 import { usePathname, useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';

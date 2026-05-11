@@ -1,6 +1,8 @@
 
-import HomePage from '../components/HomePage';
+// import HomePage from '../components/HomePage';
+import HomePageSSR from '../components/HomePageSSR';
 import { HOME_PAGE, HOST } from '../constants/localString';
+import { fetchBlogsSSR, fetchInsightListingSSR  } from './lib/fetchBlogsSSR';
 
 export async function generateMetadata({ params }) {
 
@@ -59,9 +61,17 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function page() {
+export default async function page() {
+
+  const [initialBlogs, initialInsights] = await Promise.all([
+    fetchBlogsSSR(),
+    fetchInsightListingSSR(),
+  ]);
 
   return (
-    <HomePage />
+    <HomePageSSR 
+      initialBlogs={initialBlogs}
+      initialInsights={initialInsights}
+    />
   )
 }

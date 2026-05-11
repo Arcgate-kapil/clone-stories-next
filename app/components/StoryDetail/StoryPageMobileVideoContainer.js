@@ -3,7 +3,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { WHITE } from '../../constants/colors';
 import CustomStyle from '../common/CustomStyle';
-import ReactHlsPlayer from '../HSL';
+// import ReactHlsPlayer from '../HSL';
+import ReactHlsPlayer from '../HSL/components/react-hls-player-old';
 // import { BufferVideo } from '../common/CardVideo';
 
 const StoryPageMobileVideoContainer = ({ poster, url, userClick, title, isLayoverPlayBtn, setLayoverPlayButton }) => {
@@ -383,7 +384,7 @@ const styles = {
   shareStoryLink: {
     color: WHITE,
     backgroundImage:
-      'url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.png)',
+      'url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.webp)',
     backgroundPosition: 'center',
     backgroundSize: '105%',
     borderRadius: 100,

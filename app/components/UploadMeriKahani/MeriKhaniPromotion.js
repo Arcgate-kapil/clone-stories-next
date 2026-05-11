@@ -10,6 +10,7 @@ import useWindowSize from '../../utils/useWindowSize';
 import { useInView } from 'react-intersection-observer';
 import { useSelector } from 'react-redux';
 import CustomStyle from '../common/CustomStyle';
+import Image from 'next/image';
 
 const MeriKhaniPromotion = () => {
   const [stories, setStories] = useState({});
@@ -24,18 +25,22 @@ const MeriKhaniPromotion = () => {
   const [isAtBottom, setIsAtBottom] = useState(false);
   const { width } = useWindowSize();
   const containerFluid = useRef();
-  const playerRef = useRef(null);
+  // const playerRef = useRef(null);
   const state = useSelector(state => state.blog);
+  const { ref: refStories, inView: inViewStories } = useInView({
+  threshold: 0.5,
+  triggerOnce: true, // important
+  });
 
-  useEffect(() => {
-    // Try to play programmatically on mount
-    if (playerRef.current) {
-      playerRef.current.play().catch(() => {
-        // Auto-play might fail without user interaction
-        // You can handle fallback here if needed
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   // Try to play programmatically on mount
+  //   if (playerRef.current) {
+  //     playerRef.current.play().catch(() => {
+  //       // Auto-play might fail without user interaction
+  //       // You can handle fallback here if needed
+  //     });
+  //   }
+  // }, []);
 
   useEffect(() => {
     window.scroll(0, 0);
@@ -210,12 +215,13 @@ const MeriKhaniPromotion = () => {
               <div className="col-lg-6 col-md-6 col-sm-12 col-12">
                 <div className="benefit-images d-flex">
                   {stories?.items?.map((item, index) => (
-                    <div key={index} className={`phone-mockup position-relative h-100 w-26 ${index == 1 ? 'latest-transform cust-z-index' : ''}`}>
-                      <img loading="lazy" className="w-100 h-100 frame" src="https://cdn.workmob.com/stories_workmob/images/common/phone-frame.png" alt="frame" />
+                    <div key={index} ref={refStories} className={`phone-mockup position-relative h-100 w-26 ${index == 1 ? 'latest-transform cust-z-index' : ''}`}>
+                      {/* <img loading="lazy" className="w-100 h-100 frame" src="https://cdn.workmob.com/stories_workmob/images/common/phone-frame.png" alt="frame" /> */}
+                      <Image height={450} width={200} className="w-100 h-100 frame" src="https://cdn.workmob.com/stories_workmob/images/common/phone-frame.webp" alt="frame" />
                       <ReactHlsPlayer
-                        ref={playerRef}
+                        // ref={playerRef}
                         className={`benefitVideoPlayer${index}`}
-                        url={item?.video}
+                        url={inViewStories ? item?.video : ''}
                         poster=''
                         id='VideoPlayerComman'
                         preload='auto'
@@ -261,7 +267,8 @@ const MeriKhaniPromotion = () => {
                 <div className="benefit-images d-flex">
                   {local?.items?.map((item, index) => (
                     <div key={index} ref={refLocal} className={`phone-mockup position-relative h-100 w-26 ${index == 1 ? 'latest-transform cust-z-index' : ''}`}>
-                      <img loading="lazy" className="w-100 h-100 frame" src="https://cdn.workmob.com/stories_workmob/images/common/phone-frame.png" alt="frame" />
+                      {/* <img loading="lazy" className="w-100 h-100 frame" src="https://cdn.workmob.com/stories_workmob/images/common/phone-frame.png" alt="frame" /> */}
+                      <Image height={450} width={200} className="w-100 h-100 frame" src="https://cdn.workmob.com/stories_workmob/images/common/phone-frame.webp" alt="frame" />
                       <ReactHlsPlayer
                         className={`benefitVideoPlayerLocal${index}`}
                         url={inViewLocal ? item?.video : ''}
@@ -339,7 +346,8 @@ const MeriKhaniPromotion = () => {
                 <div className="benefit-images d-flex">
                   {motivation?.items?.map((item, index) => (
                     <div key={index} ref={refMotivation} className={`phone-mockup position-relative h-100 w-26 ${index == 1 ? 'latest-transform cust-z-index' : ''}`}>
-                      <img loading="lazy" className="w-100 h-100 frame" src="https://cdn.workmob.com/stories_workmob/images/common/phone-frame.png" alt="frame" />
+                      {/* <img loading="lazy" className="w-100 h-100 frame" src="https://cdn.workmob.com/stories_workmob/images/common/phone-frame.png" alt="frame" /> */}
+                      <Image height={450} width={200} className="w-100 h-100 frame" src="https://cdn.workmob.com/stories_workmob/images/common/phone-frame.webp" alt="frame" />
                       <ReactHlsPlayer
                         className={`benefitVideoPlayerPrerna${index}`}
                         url={inViewMotivation ? item.video : ''}
@@ -374,7 +382,8 @@ const MeriKhaniPromotion = () => {
                 <div ref={refGreetings} className={`benefit-images d-flex ${width > 575 && width < 768 ? 'mb-10' : ''}`}>
                   {greetings?.items?.map((item, index) => (
                     <div key={index} className={`phone-mockup position-relative h-100 w-26 ${index == 1 ? 'latest-transform cust-z-index' : ''}`}>
-                      <img loading="lazy" className="w-100 h-100 frame" src='https://cdn.workmob.com/stories_workmob/images/common/GoldenFramegt.png' alt="frame" />
+                      {/* <img loading="lazy" className="w-100 h-100 frame" src='https://cdn.workmob.com/stories_workmob/images/common/GoldenFramegt.png' alt="frame" /> */}
+                       <Image height={450} width={200} className="w-100 h-100 frame" src="https://cdn.workmob.com/stories_workmob/images/common/GoldenFramegt.png" alt="frame" />
                       <ReactHlsPlayer
                         className={`benefitVideoPlayerGreetings${index}`}
                         url={inViewGreetings ? item.video : ''}
@@ -421,7 +430,8 @@ const MeriKhaniPromotion = () => {
                 <div className="benefit-images d-flex">
                   {digitalPehchan?.items?.map((item, index) => (
                     <div key={index} ref={refDigitalPehchan} className={`phone-mockup position-relative h-100 w-78`}>
-                      <img loading="lazy" className="w-100 h-100 frame" src="https://cdn.workmob.com/stories_workmob/images/common/landscape_frame_image.webp" alt="frame" />
+                      {/* <img loading="lazy" className="w-100 h-100 frame" src="https://cdn.workmob.com/stories_workmob/images/common/landscape_frame_image.webp" alt="frame" /> */}
+                      <Image height={350} width={600} className="w-100 h-100 frame" src="https://cdn.workmob.com/stories_workmob/images/common/landscape_frame_image.webp" alt="frame" />
                       <ReactHlsPlayer
                         className={`benefitVideoPlayerDigitalPehchan${index}`}
                         url={inViewDigitalPehchan ? item?.video : ''}
@@ -477,7 +487,8 @@ const MeriKhaniPromotion = () => {
                 {digitalMomento?.items?.map((momento, index) => (
                   <div key={index} className="col-lg-4 col-md-4 col-sm-6 col-6 mb-4">
                     <div className="momento-frame">
-                      <img className='img-fluid' src={momento?.poster_image} />
+                      {/* <img className='img-fluid' src={momento?.poster_image} /> */}
+                       <Image height={300} width={450} className="w-100 h-100 img-fluid" src={momento?.poster_image} alt={`digital-momento-${index + 1}`} />
                     </div>
                   </div>
                 ))}
@@ -621,7 +632,7 @@ const styleString = `
   height: 100%;
 }
 .plan-item .second-sec .btn {
-  background-image: url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.png);
+  background-image: url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.webp);
   background-size: 110%;
   background-position: center center;
   color: rgb(255, 255, 255);

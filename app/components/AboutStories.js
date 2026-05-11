@@ -132,7 +132,7 @@ const AboutStories = (props) => {
                     <ReactHlsPlayer
                       className='homePageBannerVideo'
                       url='https://cdn.workmob.com/stories_workmob/promotional/workmob_intro_ads/workmob_intro_ads.m3u8'
-                      poster='https://cdn.workmob.com/stories_workmob/promotional/workmob_intro_ads.jpg'
+                      poster='https://cdn.workmob.com/stories_workmob/promotional/workmob_intro_ads.webp'
                       controls={false}
                       autoPlay={true}
                       preload='auto'

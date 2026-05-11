@@ -4,6 +4,7 @@ import useWindowSize from '../../utils/useWindowSize';
 import { useSelector } from 'react-redux';
 // import ReactHlsPlayer from '../HSL/components/react-hls-player';
 import CustomStyle from '../common/CustomStyle';
+import Image from 'next/image';
 
 const HomePageFooter = () => {
   const categoryList = [
@@ -43,7 +44,7 @@ const HomePageFooter = () => {
 
     celebratingElem.classList.remove('HomePageFooter-animateCelebrating');
     categoryElem.classList.remove('HomePageFooter-animateCategory');
-    
+
     setTimeout(() => {
       celebratingElem.classList.add('HomePageFooter-animateCelebrating');
       categoryElem.classList.add('HomePageFooter-animateCategory');
@@ -207,12 +208,20 @@ const HomePageFooter = () => {
             className='d-block d-md-none'
             style={styles.appLink}
           >
-            <img
+            {/* <img
               className='w-100'
               width="100%"
               height="100%"
               src='https://cdn.workmob.com/stories_workmob/web_home/googleplaystore.png'
               alt='play store badge'
+            /> */}
+            <Image
+              className="w-100"
+              src="https://cdn.workmob.com/stories_workmob/web_home/googleplaystore.png"
+              alt="play store badge"
+              width={300}
+              height={90}
+              style={{ width: "100%", height: "100%" }}
             />
           </a>
           <p className='d-none d-md-block text-left' style={styles.bottomPara}>
@@ -235,12 +244,20 @@ const HomePageFooter = () => {
             className='d-block d-md-none'
             style={styles.appLink}
           >
-            <img
+            {/* <img
               className='w-100'
               width="100%"
               height="100%"
               src='https://cdn.workmob.com/stories_workmob/web_home/appstore.png'
               alt='app store badge'
+            /> */}
+            <Image
+              className="w-100"
+              src="https://cdn.workmob.com/stories_workmob/web_home/appstore.png"
+              alt="app store badge"
+              width={300}
+              height={90}
+              style={{ width: "100%", height: "100%" }}
             />
           </a>
           <p className='d-none d-md-block text-right' style={styles.bottomPara}>

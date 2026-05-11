@@ -440,7 +440,7 @@ const styles = {
     padding: '0.25em 0.8em',
     borderRadius: '30px',
     background:
-      'center/100% 100% url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.png)',
+      'center/100% 100% url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.webp)',
     lineHeight: '1.7',
     whiteSpace: 'nowrap',
     marginLeft: '1.8em',

@@ -13,7 +13,8 @@ import SocialShare from '../common/SocialShare';
 import { COMMON_HASHTAG } from '@/app/constants/localString';
 import { useSelector, useDispatch } from 'react-redux';
 import CustomStyle from '../common/CustomStyle';
-import { StoryViewsFirebase } from '@/app/firebase/initFirebase';
+// import { StoryViewsFirebase } from '@/app/firebase/initFirebase';
+import { getStoryViewsFirebase } from '@/app/firebase/initFirebase';
 import { setLayoverPlayBtn } from '@/app/lib/features/blogSlice';
 import StoryPageMobileVideoContainer from './StoryPageMobileVideoContainer';
 import VideoContainerDetailPageWeb from './VideoContainerDetailPageWeb';
@@ -70,30 +71,77 @@ const StoryDetailPageBanner = (props) => {
     getDataIp();
   }, []);
 
+  // useEffect(() => {
+  //   if (!ip || !slugName) return;
+  //   const postData = {
+  //     user_id: '',
+  //     name: '',
+  //     Os: 'website',
+  //     Version: '',
+  //     ip_address: ip,
+  //     updated_time: Date.now(),
+  //   };
+  //   const newPostKey = firebase.database(StoryViewsFirebase).ref().child('StoriesViews').push().key;
+  //   const updates = {};
+  //   updates[newPostKey] = postData;
+  //   firebase.database(StoryViewsFirebase).ref('StoriesViews').child(slugName).update(updates);
+  // }, [ip, slugName]);
+
+  // useEffect(() => {
+  //   if (!slugName) return;
+  //   const db = firebase.database(StoryViewsFirebase).ref('StoriesViews').child(slugName);
+  //   db.on('value', snapshot => {
+  //     const data = snapshot.val();
+  //     if (data) setViewCount(Object.keys(data).length);
+  //   });
+  //   return () => db.off();
+  // }, [slugName]);
+
   useEffect(() => {
     if (!ip || !slugName) return;
-    const postData = {
-      user_id: '',
-      name: '',
-      Os: 'website',
-      Version: '',
-      ip_address: ip,
-      updated_time: Date.now(),
+
+    const updateStoryViews = async () => {
+      const storyViewsFirebase = await getStoryViewsFirebase();
+      const postData = {
+        user_id: '',
+        name: '',
+        Os: 'website',
+        Version: '',
+        ip_address: ip,
+        updated_time: Date.now(),
+      };
+      const newPostKey = storyViewsFirebase.database().ref().child('StoriesViews').push().key;
+      const updates = {};
+      updates[newPostKey] = postData;
+      storyViewsFirebase.database().ref('StoriesViews').child(slugName).update(updates);
     };
-    const newPostKey = firebase.database(StoryViewsFirebase).ref().child('StoriesViews').push().key;
-    const updates = {};
-    updates[newPostKey] = postData;
-    firebase.database(StoryViewsFirebase).ref('StoriesViews').child(slugName).update(updates);
+
+    updateStoryViews();
   }, [ip, slugName]);
 
   useEffect(() => {
     if (!slugName) return;
-    const db = firebase.database(StoryViewsFirebase).ref('StoriesViews').child(slugName);
-    db.on('value', snapshot => {
-      const data = snapshot.val();
-      if (data) setViewCount(Object.keys(data).length);
-    });
-    return () => db.off();
+
+    let db;
+    let cancelled = false;
+
+    const subscribeToStoryViews = async () => {
+      const storyViewsFirebase = await getStoryViewsFirebase();
+      if (cancelled) return;
+
+      db = storyViewsFirebase.database().ref('StoriesViews').child(slugName);
+      db.on('value', snapshot => {
+        const data = snapshot.val();
+        if (data) setViewCount(Object.keys(data).length);
+      });
+    };
+
+    subscribeToStoryViews();
+
+    return () => {
+      cancelled = true;
+      db?.off();
+    };
   }, [slugName]);
 
   useEffect(() => {
@@ -633,7 +681,7 @@ const styleString = `
   .mb-18 {
       margin-bottom: 18px;
   }
-       .vcfContact {
+  .vcfContact {
       opacity: .5;
       color: rgba(255, 255, 255, 1);
       font-weight: 600;
@@ -763,7 +811,7 @@ const styles = {
     padding: '0.25em 0.6em',
     borderRadius: '30px',
     background:
-      'center/100% 100% url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.png)',
+      'center/100% 100% url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.webp)',
     lineHeight: '1.5',
     whiteSpace: 'nowrap',
     textDecoration: 'none',

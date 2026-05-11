@@ -11,7 +11,7 @@ import { setHindiButtonView } from '../lib/features/blogSlice';
 import { trackScreen } from '../firebase/firebase';
 import CustomStyle from '../components/common/CustomStyle';
 import { useSelector, useDispatch } from 'react-redux';
-import ReactHlsPlayer from '../components/HSL/components/react-hls-player';
+import ReactHlsPlayer from './HSL/components/react-hls-player';
 import StoryDetailPageFooterNew from '../components/StoryDetail/StoryDetailPageFooterNew';
 import useWindowSize from '../utils/useWindowSize';
 

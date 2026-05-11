@@ -643,7 +643,7 @@ const styleString = `
   }
   .bottomBranding a {
     color: rgb(255, 255, 255);
-    background-image: url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.png);
+    background-image: url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.webp);
     background-position: center center;
     background-size: 105%;
     border-radius: 100px;

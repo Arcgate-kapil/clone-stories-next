@@ -70,7 +70,7 @@ export default HomePageInspiring;
 const styles = {
   btn: {
     backgroundImage:
-      'url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.png)',
+      'url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.webp)',
     backgroundPosition: 'center',
     color: WHITE,
     borderRadius: 100,

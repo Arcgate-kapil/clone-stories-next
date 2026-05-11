@@ -124,7 +124,7 @@ const MeriKhaniPromotion = ({ showButton = true }) => {
             <span>&nbsp;IN भारत</span>
           </p> */}
           <img
-            src="https://cdn.workmob.com/stories_workmob/web_home/made-with-love-in-bharat-new.png"
+            src="https://cdn.workmob.com/stories_workmob/web_home/made-with-love-in-bharat-new.webp"
             alt='Made with love in bharat'
             width={width < 821 && width > 767 ? '154' : '200'}
             height={width < 821 && width > 767 ? '25' : '36'}
@@ -199,7 +199,7 @@ const MeriKhaniPromotion = ({ showButton = true }) => {
             Aapki Digital Pehchan
           </h3>
           <img
-            src="https://cdn.workmob.com/stories_workmob/web_home/made-with-love-in-bharat-new.png"
+            src="https://cdn.workmob.com/stories_workmob/web_home/made-with-love-in-bharat-new.webp"
             alt='Made with love in bharat'
             width={width < 821 && width > 767 ? '154' : '135'}
             height={width < 821 && width > 767 ? '25' : '19'}
@@ -264,7 +264,7 @@ const styles = {
   shareStoryLink: {
     color: WHITE,
     backgroundImage:
-      'url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.png)',
+      'url(https://cdn.workmob.com/stories_workmob/images/promotional/button-bg.webp)',
     backgroundPosition: 'center',
     backgroundSize: '105%',
     borderRadius: 100,

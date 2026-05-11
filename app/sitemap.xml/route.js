@@ -21,7 +21,7 @@ async function fetchAllStories() {
 
     // Aapke response me "data" array tha
     const records = Array.isArray(data?.data) ? data.data : Array.isArray(data) ? data : [];
-    
+
     // hide=1 wale skip karo
     const visible = records.filter(item => item.hide !== 1);
     allStories.push(...visible);
@@ -37,9 +37,9 @@ async function fetchAllStories() {
 }
 
 async function fetchUrlData() {
-   try {
+  try {
     // const [trendingTagsRes, masterIndexRes, locationsRes, categoriesRes] = await Promise.all([
-      const [trendingTagsRes, masterIndex, locationsRes, categoriesRes] = await Promise.all([
+    const [trendingTagsRes, masterIndex, locationsRes, categoriesRes] = await Promise.all([
       fetch(trendingTagsUrl),
       fetchAllStories(),
       // masterndexUrl,
@@ -51,7 +51,7 @@ async function fetchUrlData() {
     // const masterIndex = await masterIndexRes.json();
     const locations = await locationsRes.json();
     const categories = await categoriesRes.json();
-   
+
     return {
       trendingTags,
       masterIndex,
@@ -73,94 +73,94 @@ export async function generateSitemap(data) {
   // Base URL from env or fallback
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://stories.workmob.com';
 
-   const blogsId = data.masterIndex.map(blog => ({slug: blog.slug}));
+  const blogsId = data.masterIndex.map(blog => ({ slug: blog.slug }));
   // const tagsId = data.trendingTags.map(tags => ({id: tags.tag.toLowerCase().replace(/ /g, '-')}))
-  const tagsId = data.trendingTags.data.map(tags => ({id: tags.tag_name.toLowerCase().replace(/ /g, '-')}))
-  const locationsId = data.locations.locations.map(location => ({id: location.id.replace(/_/g, '-')}));
-  const categoriesId = data?.categories?.data.map(category => ({id: category.category}));
+  const tagsId = data.trendingTags.data.map(tags => ({ id: tags.tag_name.toLowerCase().replace(/ /g, '-') }))
+  const locationsId = data.locations.locations.map(location => ({ id: location.id.replace(/_/g, '-') }));
+  const categoriesId = data?.categories?.data.map(category => ({ id: category.category }));
 
   // Static routes
-   const staticRoutes = [
-    { url: `${baseUrl}/`, lastModified: new Date() },
-    { url: `${baseUrl}/hindi`, lastModified: new Date() },
-    { url: `${baseUrl}/merikahani`, lastModified: new Date() },
-    { url: `${baseUrl}/admin`, lastModified: new Date() },
-    { url: `${baseUrl}/create`, lastModified: new Date() },
-    { url: `${baseUrl}/hindi/create`, lastModified: new Date() },
-    { url: `${baseUrl}/tags`, lastModified: new Date() },
-    { url: `${baseUrl}/hindi/tags`, lastModified: new Date() },
-    { url: `${baseUrl}/about`, lastModified: new Date() },
-    { url: `${baseUrl}/voices`, lastModified: new Date() },
-    { url: `${baseUrl}/hindi/voices`, lastModified: new Date() },
-    { url: `${baseUrl}/local`, lastModified: new Date() },
-    { url: `${baseUrl}/hindi/local`, lastModified: new Date() },
-    { url: `${baseUrl}/categories`, lastModified: new Date() },
-    { url: `${baseUrl}/hindi/categories`, lastModified: new Date() },
-    { url: `${baseUrl}/insights`, lastModified: new Date() },
-    { url: `${baseUrl}/podcasts`, lastModified: new Date() },
-    { url: `${baseUrl}/hindi/podcasts`, lastModified: new Date() },
+  const staticRoutes = [
+    { url: `${baseUrl}/` },
+    { url: `${baseUrl}/hindi` },
+    { url: `${baseUrl}/merikahani` },
+    { url: `${baseUrl}/admin` },
+    { url: `${baseUrl}/create` },
+    { url: `${baseUrl}/hindi/create` },
+    { url: `${baseUrl}/tags` },
+    { url: `${baseUrl}/hindi/tags` },
+    { url: `${baseUrl}/about` },
+    { url: `${baseUrl}/voices` },
+    { url: `${baseUrl}/hindi/voices` },
+    { url: `${baseUrl}/local` },
+    { url: `${baseUrl}/hindi/local` },
+    { url: `${baseUrl}/categories` },
+    { url: `${baseUrl}/hindi/categories` },
+    { url: `${baseUrl}/insights` },
+    { url: `${baseUrl}/podcasts` },
+    { url: `${baseUrl}/hindi/podcasts` },
   ];
 
   const blogRoutes = data.masterIndex.map(blog => ({
-    url: `${baseUrl}/${blog.slug}`,
-    lastModified: new Date(),
-    videoThumb: blog.mobileThumb || blog.thumb || "",
-    videoTitle: blog.storyHeading || blog.metaTitle || "",   // ← yeh add karo
-    videoDesc: blog.metaDesc || "",
-    videoUrl: `https://cdn.workmob.com/stories_workmob/videos/${blog?.slug}-${blog?.location}-video/${blog?.slug}-${blog?.location}-video.m3u8` || "",
-    image: blog.thumb || ""
+    url: `${baseUrl}/${blog.slug}`
+    // lastModified: new Date(),
+    // videoThumb: blog.mobileThumb || blog.thumb || "",
+    // videoTitle: blog.storyHeading || blog.metaTitle || "",   // ← yeh add karo
+    // videoDesc: blog.metaDesc || "",
+    // videoUrl: `https://cdn.workmob.com/stories_workmob/videos/${blog?.slug}-${blog?.location}-video/${blog?.slug}-${blog?.location}-video.m3u8` || "",
+    // image: blog.thumb || ""
   }));
   const hindiBlogRoutes = data.masterIndex.map(blog => ({
-    url: `${baseUrl}/hindi/${blog.slug}`,
-    lastModified: new Date(),
-    videoThumb: blog.mobileThumb || blog.thumb || "",
-    videoTitle: blog.storyHeading_hindi || blog.metaTitle_hindi || "",   // ← yeh add karo
-    videoDesc: blog.metaDesc || "",
-    videoUrl: `https://cdn.workmob.com/stories_workmob/videos/${blog?.slug}-${blog?.location}-video/${blog?.slug}-${blog?.location}-video.m3u8` || "",
-    image: blog.thumb || ""
+    url: `${baseUrl}/hindi/${blog.slug}`
+    // lastModified: new Date(),
+    // videoThumb: blog.mobileThumb || blog.thumb || "",
+    // videoTitle: blog.storyHeading_hindi || blog.metaTitle_hindi || "",   // ← yeh add karo
+    // videoDesc: blog.metaDesc || "",
+    // videoUrl: `https://cdn.workmob.com/stories_workmob/videos/${blog?.slug}-${blog?.location}-video/${blog?.slug}-${blog?.location}-video.m3u8` || "",
+    // image: blog.thumb || ""
   }));
   // Dynamic routes for tags
   const tagRoutes = data?.trendingTags?.data.map(tags => ({
     // url: `${baseUrl}/tags/${tags.tag.toLowerCase().replace(/ /g, '-')}`,
-    url: `${baseUrl}/tags/${tags.tag_name.toLowerCase().replace(/ /g, '-')}`,
-    lastModified: new Date(),
+    url: `${baseUrl}/tags/${tags.tag_name.toLowerCase().replace(/ /g, '-')}`
+    // lastModified: new Date(),
   }));
   const hindiTagRoutes = data?.trendingTags?.data.map(tags => ({
     // url: `${baseUrl}/hindi/tags/${tags.tag.toLowerCase().replace(/ /g, '-')}`,
-    url: `${baseUrl}/hindi/tags/${tags.tag_name.toLowerCase().replace(/ /g, '-')}`,
-    lastModified: new Date(),
+    url: `${baseUrl}/hindi/tags/${tags.tag_name.toLowerCase().replace(/ /g, '-')}`
+    // lastModified: new Date(),
   }));
   // Dynamic routes for locations
   const locationRoutes = data.locations.locations.map(location => ({
-    url: `${baseUrl}/local/${location.id.replace(/_/g, '-')}`,
-    lastModified: new Date(),
+    url: `${baseUrl}/local/${location.id.replace(/_/g, '-')}`
+    // lastModified: new Date(),
   }));
 
   const hindiLocationRoutes = data.locations.locations.map(location => ({
-    url: `${baseUrl}/hindi/local/${location.id.replace(/_/g, '-')}`,
-    lastModified: new Date(),
+    url: `${baseUrl}/hindi/local/${location.id.replace(/_/g, '-')}`
+    // lastModified: new Date(),
   }));
   // Dynamic routes for categories
   const categoryRoutes = data?.categories?.data.map(category => ({
-    url: `${baseUrl}/voices/${category.category}`,
-    lastModified: new Date(),
+    url: `${baseUrl}/voices/${category.category}`
+    // lastModified: new Date(),
   }));
   const hindiCategoryRoutes = data?.categories?.data.map(category => ({
-    url: `${baseUrl}/hindi/voices/${category.category}`,
-    lastModified: new Date(),
+    url: `${baseUrl}/hindi/voices/${category.category}`
+    // lastModified: new Date(),
   }));
 
   const allRoutes = [...staticRoutes,
-    ...blogRoutes,
-    ...hindiBlogRoutes,
-    ...tagRoutes,
-    ...hindiTagRoutes,
-    ...locationRoutes,
-    ...hindiLocationRoutes,
-    ...categoryRoutes,
-    ...hindiCategoryRoutes];
+  ...blogRoutes,
+  ...hindiBlogRoutes,
+  ...tagRoutes,
+  ...hindiTagRoutes,
+  ...locationRoutes,
+  ...hindiLocationRoutes,
+  ...categoryRoutes,
+  ...hindiCategoryRoutes];
 
-    function escapeXml(str) {
+  function escapeXml(str) {
     if (!str) return "";
     return str
       .replace(/&/g, "&amp;")
@@ -182,19 +182,9 @@ export async function generateSitemap(data) {
           return `
       <url>
         <loc>${escapeXml(route.url)}</loc>
-        <lastmod>${route.lastModified.toISOString()}</lastmod>
-        ${route.image ? `<image:image><image:loc>${escapeXml(route.image)}</image:loc></image:image>` : ""}
-        ${route.videoUrl ? `
-         <video:video>
-           <video:thumbnail_loc>${escapeXml(route.videoThumb)}</video:thumbnail_loc>
-           <video:title>${escapeXml(route.videoTitle)}</video:title>
-           <video:description>${escapeXml(route.videoDesc)}</video:description>
-           <video:content_loc>${escapeXml(route.videoUrl)}</video:content_loc>
-         </video:video>` : ""
-          }
       </url>
     `
-    })
+        })
       .join('')}
   </urlset>`;
 
